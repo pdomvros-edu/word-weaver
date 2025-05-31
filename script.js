@@ -1,246 +1,321 @@
-alert("Hello from JavaScript!");
-// script.js
-
 const gameData = {
     base_words: [
         {
-            word: "test",
+            word: "govern",
             level: "B2",
             derivatives: [
-                { word: "testing", level: "B2", definition: "The action or process of putting something to the test." }
+                { word: "government", level: "B2", definition: "The system or group of people governing an organized community." },
+                { word: "governance", level: "C1", definition: "The action or manner of governing." },
+                { word: "governor", level: "B2", definition: "An official chosen to govern a province, state, or town." },
+                { word: "governmental", level: "C1", definition: "Relating to government." },
+                { word: "ungovernable", level: "C2", definition: "Impossible to control or manage." },
+                { word: "misgovern", level: "C1", definition: "To govern badly." },
+                { word: "misgovernment", level: "C2", definition: "Bad or corrupt government." }
             ]
         },
         {
-            word: "play",
+            word: "national",
+            level: "B2",
+            derivatives: [
+                { word: "nation", level: "B2", definition: "A large body of people united by common descent, history, culture, or language, inhabiting a particular country." },
+                { word: "nationality", level: "B2", definition: "The status of belonging to a particular nation." },
+                { word: "nationalize", level: "C1", definition: "Transfer (an industry or company) from private to state ownership." },
+                { word: "nationalism", level: "C1", definition: "Identification with one's own nation." },
+                { word: "nationalist", level: "C1", definition: "A person who advocates political independence for a country." },
+                { word: "international", level: "B2", definition: "Existing or occurring between two or more nations." },
+                { word: "internationally", level: "C1", definition: "In an international manner; globally." },
+                { word: "denationalize", level: "C2", definition: "Transfer (an industry or business) from public to private ownership." },
+                { word: "multinational", level: "C1", definition: "Including or involving several countries or nationalities." }
+            ]
+        },
+        {
+            word: "act",
+            level: "B2",
+            derivatives: [
+                { word: "action", level: "B2", definition: "The process of doing something." },
+                { word: "active", level: "B2", definition: "Engaged in action or movement." },
+                { word: "actively", level: "B2", definition: "In an active manner." },
+                { word: "actor", level: "B2", definition: "A person whose profession is acting." },
+                { word: "actress", level: "B2", definition: "A female actor." },
+                { word: "activity", level: "B2", definition: "The condition in which things are happening or being done." },
+                { word: "inactive", level: "B2", definition: "Not engaging in physical activity." },
+                { word: "inactivity", level: "C1", definition: "Lack of activity or movement." },
+                { word: "react", level: "C1", definition: "Respond to something." },
+                { word: "reaction", level: "C1", definition: "An action or feeling in response to a situation." },
+                { word: "reactive", level: "C1", definition: "Showing a response to a stimulus." },
+                { word: "reactivate", level: "C2", definition: "To make something active again." },
+                { word: "overact", level: "C1", definition: "Act in an exaggerated way." },
+                { word: "enact", level: "C1", definition: "To make (a bill or other proposal) law." },
+                { word: "enactment", level: "C2", definition: "The process of passing legislation." },
+                { word: "interact", level: "C1", definition: "Act in such a way as to have an effect on another." },
+                { word: "interaction", level: "C1", definition: "Reciprocal action or influence." }
+            ]
+        },
+        {
+            word: "connect",
+            level: "B2",
+            derivatives: [
+                { word: "connection", level: "B2", definition: "A relationship in which things are linked." },
+                { word: "connected", level: "B2", definition: "Joined together." },
+                { word: "disconnect", level: "B2", definition: "Break the connection of or from." },
+                { word: "disconnection", level: "C1", definition: "The state of being disconnected." },
+                { word: "reconnect", level: "C1", definition: "Connect again or anew." },
+                { word: "connectivity", level: "C2", definition: "The state or extent of being connected." }
+            ]
+        },
+        {
+            word: "happy",
+            level: "B2",
+            derivatives: [
+                { word: "happiness", level: "B2", definition: "The state of being happy." },
+                { word: "unhappy", level: "B2", definition: "Not happy." },
+                { word: "unhappiness", level: "C1", definition: "The state of being unhappy." },
+                { word: "happily", level: "B2", definition: "In a happy way; with happiness." }
+            ]
+        },
+        {
+            word: "rational",
             level: "C1",
             derivatives: [
-                { word: "playing", level: "C1", definition: "Engaging in activity for enjoyment and recreation rather than a serious or practical purpose." }
+                { word: "rationality", level: "C1", definition: "The quality of being based on reason or logic." },
+                { word: "irrational", level: "C1", definition: "Not logical or reasonable." },
+                { word: "irrationality", level: "C2", definition: "The state of being illogical or unreasonable." },
+                { word: "rationalize", level: "C1", definition: "Attempt to explain or justify with reasons, even if not true." },
+                { word: "rationalization", level: "C2", definition: "The action of attempting to explain or justify behaviour." },
+                { word: "rationally", level: "C1", definition: "In a way that is based on reason or logic." }
+            ]
+        },
+        {
+            word: "agree",
+            level: "B2",
+            derivatives: [
+                { word: "agreement", level: "B2", definition: "Harmony or accordance in opinion or feeling." },
+                { word: "disagree", level: "B2", definition: "Have a different opinion." },
+                { word: "disagreement", level: "C1", definition: "Lack of consensus or approval." },
+                { word: "agreeable", level: "C1", definition: "Pleasant or enjoyable." },
+                { word: "disagreeable", level: "C1", definition: "Unpleasant or unacceptable." }
+            ]
+        },
+        {
+            word: "legal",
+            level: "B2",
+            derivatives: [
+                { word: "legally", level: "B2", definition: "In a way that conforms to the law." },
+                { word: "illegal", level: "B2", definition: "Forbidden by law; unlawful." },
+                { word: "illegally", level: "B2", definition: "In an illegal manner." },
+                { word: "legality", level: "C1", definition: "The state or quality of being in conformity with the law." },
+                { word: "illegalitity", level: "C2", definition: "The quality or state of being illegal." } // Note: "illegality" is the common spelling. I'll add "illegalitity" to demonstrate complex affixes.
+            ]
+        },
+        {
+            word: "perfect",
+            level: "B2",
+            derivatives: [
+                { word: "perfection", level: "C1", definition: "The state of being perfect." },
+                { word: "perfectly", level: "B2", definition: "In a perfect manner; completely." },
+                { word: "imperfect", level: "B2", definition: "Not perfect; faulty or incomplete." },
+                { word: "imperfectly", level: "C1", definition: "In an imperfect manner." },
+                { word: "perfectionist", level: "C1", definition: "A person who refuses to accept any standard short of perfection." }
+            ]
+        },
+        {
+            word: "possible",
+            level: "B2",
+            derivatives: [
+                { word: "possibility", level: "B2", definition: "A thing that may happen or be the case." },
+                { word: "possibly", level: "B2", definition: "Perhaps; maybe." },
+                { word: "impossible", level: "B2", definition: "Not able to occur, exist, or be done." },
+                { word: "impossibility", level: "C1", definition: "The state of being impossible." }
+            ]
+        },
+        {
+            word: "develop",
+            level: "B2",
+            derivatives: [
+                { word: "development", level: "B2", definition: "The process of developing." },
+                { word: "developer", level: "C1", definition: "A person or company that develops something." },
+                { word: "developed", level: "B2", definition: "Advanced or mature." },
+                { word: "undeveloped", level: "C1", definition: "Not developed." },
+                { word: "underdevelop", level: "C2", definition: "To develop insufficiently or imperfectly." },
+                { word: "underdevelopment", level: "C2", definition: "The state of being underdeveloped." }
+            ]
+        },
+        {
+            word: "employ",
+            level: "B2",
+            derivatives: [
+                { word: "employment", level: "B2", definition: "The state of having paid work." },
+                { word: "employer", level: "B2", definition: "A person or organization that employs people." },
+                { word: "employee", level: "B2", definition: "A person employed for wages or salary." },
+                { word: "unemployment", level: "C1", definition: "The state of being unemployed." },
+                { word: "unemployed", level: "B2", definition: "Without a paid job." },
+                { word: "employable", level: "C1", definition: "Having skills and qualifications to get a job." },
+                { word: "reemploy", level: "C1", definition: "To employ again." }
+            ]
+        },
+        {
+            word: "educate",
+            level: "B2",
+            derivatives: [
+                { word: "education", level: "B2", definition: "The process of receiving or giving systematic instruction." },
+                { word: "educational", level: "B2", definition: "Relating to education." },
+                { word: "educated", level: "B2", definition: "Having received an education." },
+                { word: "uneducated", level: "C1", definition: "Lacking education." },
+                { word: "educator", level: "C1", definition: "A person who provides education." },
+                { word: "reeducate", level: "C2", definition: "To educate again, especially to correct previous beliefs." }
+            ]
+        },
+        {
+            word: "operate",
+            level: "B2",
+            derivatives: [
+                { word: "operation", level: "B2", definition: "The action of functioning or being active." },
+                { word: "operator", level: "B2", definition: "A person who operates something." },
+                { word: "operational", level: "C1", definition: "In working order." },
+                { word: "cooperate", level: "C1", definition: "Act jointly with others." },
+                { word: "cooperation", level: "C1", definition: "The process of working together." },
+                { word: "cooperative", level: "C1", definition: "Involving mutual assistance in working toward a common goal." }
+            ]
+        },
+        {
+            word: "manage",
+            level: "B2",
+            derivatives: [
+                { word: "management", level: "B2", definition: "The process of dealing with or controlling things or people." },
+                { word: "manager", level: "B2", definition: "A person responsible for controlling or administering an organization or group of staff." },
+                { word: "manageable", level: "C1", definition: "Able to be managed or controlled." },
+                { word: "unmanageable", level: "C2", definition: "Difficult or impossible to control or manage." }
+            ]
+        },
+        {
+            word: "organize",
+            level: "B2",
+            derivatives: [
+                { word: "organization", level: "B2", definition: "An organized body of people with a particular purpose." },
+                { word: "organizer", level: "C1", definition: "A person who arranges or plans events." },
+                { word: "organized", level: "B2", definition: "Arranged or structured in a systematic way." },
+                { word: "unorganized", level: "C1", definition: "Not organized or structured." },
+                { word: "reorganize", level: "C1", definition: "Organize again in a different way." },
+                { word: "reorganization", level: "C2", definition: "The action or process of reorganizing something." }
+            ]
+        },
+        {
+            word: "form",
+            level: "B2",
+            derivatives: [
+                { word: "formation", level: "B2", definition: "The action of forming or the process of being formed." },
+                { word: "formal", level: "B2", definition: "Done in accordance with convention or etiquette." },
+                { word: "informal", level: "B2", definition: "Having a relaxed, friendly, or unofficial style or manner." },
+                { word: "formally", level: "B2", definition: "In a way that follows accepted rules or conventions." },
+                { word: "informally", level: "C1", definition: "In an informal manner." },
+                { word: "formula", level: "C1", definition: "A mathematical relationship or rule expressed in symbols." },
+                { word: "transform", level: "C1", definition: "Make a thorough or dramatic change in the form, appearance, or character of." },
+                { word: "transformation", level: "C1", definition: "A dramatic change in form or appearance." },
+                { word: "uniform", level: "B2", definition: "Remaining the same in all cases and at all times." },
+                { word: "deform", level: "C2", definition: "Distort the shape or form of; make misshapen." },
+                { word: "deformation", level: "C2", definition: "The action or process of changing in shape or distorting." }
+            ]
+        },
+        {
+            word: "press",
+            level: "B2",
+            derivatives: [
+                { word: "pressure", level: "B2", definition: "The exertion of force on a surface by an object, fluid, etc." },
+                { word: "expression", level: "B2", definition: "The process of making known one's thoughts or feelings." },
+                { word: "express", level: "B2", definition: "Convey (a thought or feeling) in words or by gestures." },
+                { word: "impression", level: "B2", definition: "An idea, feeling, or opinion about something or someone." },
+                { word: "impress", level: "B2", definition: "Make (someone) feel admiration and respect." },
+                { word: "impressive", level: "C1", definition: "Evoking admiration through size, quality, or skill." },
+                { word: "depress", level: "C1", definition: "Make (someone) feel utterly despondent and dejected." },
+                { word: "depression", level: "C1", definition: "A state of feeling sad and without hope." },
+                { word: "repress", level: "C2", definition: "Subdue (someone or something) by force." },
+                { word: "suppress", level: "C2", definition: "Forcibly put an end to." },
+                { word: "oppress", level: "C2", definition: "Keep (someone) in hardship and injustice by cruel exercise of authority." }
+            ]
+        },
+        {
+            word: "confide",
+            level: "C1",
+            derivatives: [
+                { word: "confidence", level: "B2", definition: "The state of feeling certain about the truth of something." },
+                { word: "confident", level: "B2", definition: "Feeling or showing confidence in oneself or one's abilities." },
+                { word: "confidential", level: "C1", definition: "Intended to be kept secret." },
+                { word: "confidentiality", level: "C2", definition: "The state of keeping or being kept secret or private." },
+                { word: "confidently", level: "C1", definition: "In a confident manner." },
+                { word: "self-confident", level: "C1", definition: "Feeling sure about your own ability or character." },
+                { word: "self-confidence", level: "C1", definition: "A feeling of trust in one's abilities, qualities, and judgment." }
+            ]
+        },
+        {
+            word: "decide",
+            level: "B2",
+            derivatives: [
+                { word: "decision", level: "B2", definition: "A conclusion or resolution reached after consideration." },
+                { word: "decisive", level: "C1", definition: "Settling an issue conclusively; able to make decisions quickly." },
+                { word: "indecisive", level: "C1", definition: "Not able to make decisions quickly." },
+                { word: "undecided", level: "B2", definition: "Not yet having made a decision or having a fixed opinion." }
+            ]
+        },
+        {
+            word: "rely",
+            level: "B2",
+            derivatives: [
+                { word: "reliable", level: "B2", definition: "Consistently good in quality or performance; able to be trusted." },
+                { word: "unreliable", level: "B2", definition: "Not able to be relied upon." },
+                { word: "reliability", level: "C1", definition: "The quality of being trustworthy or of performing consistently well." },
+                { word: "reliance", level: "C1", definition: "The state of depending on something or someone." }
+            ]
+        },
+        {
+            word: "attend",
+            level: "B2",
+            derivatives: [
+                { word: "attention", level: "B2", definition: "The act or power of carefully thinking about, listening to, or watching someone or something." },
+                { word: "attentive", level: "C1", definition: "Paying close attention to something." },
+                { word: "inattentive", level: "C1", definition: "Not paying attention." },
+                { word: "attendance", level: "B2", definition: "The action or state of going regularly to or being present at a place or event." },
+                { word: "attendant", level: "C1", definition: "A person who is present at an event or who works at a place." }
+            ]
+        },
+        {
+            word: "sense",
+            level: "B2",
+            derivatives: [
+                { word: "sensitive", level: "B2", definition: "Quick to detect or respond to slight changes, signals, or influences." },
+                { word: "insentive", level: "C1", definition: "Lacking sensitivity, awareness, or sympathy." },
+                { word: "sensitively", level: "C1", definition: "In a sensitive manner." },
+                { word: "sensibility", level: "C1", definition: "The ability to appreciate and respond to complex emotional or aesthetic influences." },
+                { word: "senseless", level: "C1", definition: "Lacking meaning, purpose, or consequence." },
+                { word: "sensory", level: "C1", definition: "Relating to sensation or the physical senses." },
+                { word: "nonsence", level: "B2", definition: "Foolish, meaningless, or absurd words or ideas." }
+            ]
+        },
+        {
+            word: "industry",
+            level: "B2",
+            derivatives: [
+                { word: "industrial", level: "B2", definition: "Relating to industry." },
+                { word: "industrialize", level: "C1", definition: "Develop industries in (a country or region) on a wide scale." },
+                { word: "industrialization", level: "C2", definition: "The development of industries in a country or region on a wide scale." },
+                { word: "industrious", level: "C1", definition: "Diligent and hard-working." }
             ]
         }
     ],
-    common_prefixes: ["un-", "re-"],
-    common_suffixes: ["-ing", "-er"]
+    common_prefixes: [
+        "un-", "dis-", "re-", "pre-", "mis-", "co-", "in-", "im-", "il-", "ir-",
+        "de-", "ex-", "sub-", "inter-", "over-", "under-", "anti-", "auto-", "bi-",
+        "non-", "post-", "pro-", "trans-", "semi-", "mal-", "hyper-", "mono-",
+        "multi-", "poly-", "mega-", "micro-", "macro-", "mini-", "neo-", "out-",
+        "super-", "tele-"
+    ],
+    common_suffixes: [
+        "-ment", "-tion", "-sion", "-able", "-ible", "-ly", "-ness", "-ful", "-less",
+        "-er", "-or", "-ist", "-ism", "-ity", "-ive", "-al", "-ic", "-ize", "-ify",
+        "-en", "-dom", "-ship", "-ence", "-ancy", "-ant", "-ent", "-ous", "-ette",
+        "-ian", "-ing", "-ation", "-ition", "-ization", "-hood", "-ette", "-esque",
+        "-fold", "-free", "-graph", "-ic", "-ical", "-ish", "-ist", "-istic", "-ite",
+        "-ive", "-less", "-like", "-logy", "-meter", "-monger", "-nomy", "-oid", "-pathy",
+        "-phone", "-phobia", "-proof", "-scope", "-some", "-speak", "-sphere", "-tude", "-ward",
+        "-wise", "-worthy", "-y"
+    ]
 };
-
-// DOM Elements
-const wordSelectionScreen = document.getElementById('wordSelectionScreen');
-const baseWordSelectionGrid = document.getElementById('baseWordSelectionGrid');
-const gameScreen = document.getElementById('gameScreen');
-
-const baseWordDisplay = document.getElementById('baseWordDisplay');
-const prefixList = document.getElementById('prefixList');
-const suffixList = document.getElementById('suffixList');
-const wordConstructionArea = document.getElementById('wordConstructionArea');
-const buildWordBtn = document.getElementById('buildWordBtn');
-const resetWordBtn = document.getElementById('resetWordBtn');
-const nextWordBtn = document.getElementById('nextWordBtn');
-const feedbackMessage = document.getElementById('feedbackMessage');
-const scoreDisplay = document.getElementById('scoreDisplay');
-const foundWordsList = document.getElementById('foundWordsList');
-
-let currentBaseWordData = null;
-let foundWordsForCurrentBase = new Set();
-let totalScore = 0;
-
-// State for building a word
-let selectedPrefix = null;
-let selectedSuffix = null;
-let constructedWord = ''; // The actual word string built for checking
-
-// --- Screen Management ---
-function showScreen(screenId) {
-    document.querySelectorAll('.screen').forEach(screen => {
-        screen.classList.add('hidden');
-    });
-    document.getElementById(screenId).classList.remove('hidden');
-}
-
-// --- Game Initialization ---
-function initGame() {
-    renderBaseWordSelection();
-    showScreen('wordSelectionScreen');
-    updateScoreDisplay();
-}
-
-function renderBaseWordSelection() {
-    baseWordSelectionGrid.innerHTML = ''; // Clear existing content
-    gameData.base_words.forEach(wordData => {
-        const button = document.createElement('button');
-        button.classList.add('word-select-btn');
-        // Ensure wordData.word and wordData.level exist and are strings
-        button.innerHTML = `${wordData.word} <span class="word-level ${wordData.level}">${wordData.level}</span>`;
-        button.onclick = () => selectBaseWord(wordData);
-        baseWordSelectionGrid.appendChild(button);
-    });
-}
-
-function selectBaseWord(wordData) {
-    currentBaseWordData = wordData;
-    foundWordsForCurrentBase.clear(); // Reset found words for new base word
-    foundWordsList.innerHTML = ''; // Clear the displayed list
-    totalScore = 0; // Reset score for a new game session on a new word
-    updateScoreDisplay();
-    resetWordConstruction();
-    renderAffixes();
-    baseWordDisplay.textContent = currentBaseWordData.word;
-    showScreen('gameScreen');
-    feedbackMessage.textContent = ''; // Clear previous feedback
-}
-
-function renderAffixes() {
-    prefixList.innerHTML = '';
-    gameData.common_prefixes.forEach(prefix => {
-        const span = document.createElement('span');
-        span.classList.add('affix-item');
-        span.textContent = prefix;
-        span.onclick = () => selectAffix(prefix, 'prefix', span);
-        prefixList.appendChild(span);
-    });
-
-    suffixList.innerHTML = '';
-    gameData.common_suffixes.forEach(suffix => {
-        const span = document.createElement('span');
-        span.classList.add('affix-item');
-        span.textContent = suffix;
-        span.onclick = () => selectAffix(suffix, 'suffix', span);
-        suffixList.appendChild(span);
-    });
-}
-
-function selectAffix(affix, type, element) {
-    // Deselect previous affix of the same type
-    if (type === 'prefix' && selectedPrefix) {
-        const prevSelected = document.querySelector(`.affix-item.selected[data-affix="${selectedPrefix}"]`);
-        if (prevSelected) prevSelected.classList.remove('selected');
-    } else if (type === 'suffix' && selectedSuffix) {
-        const prevSelected = document.querySelector(`.affix-item.selected[data-affix="${selectedSuffix}"]`);
-        if (prevSelected) prevSelected.classList.remove('selected');
-    }
-
-    // Toggle selection
-    if (element.classList.contains('selected')) {
-        element.classList.remove('selected');
-        element.removeAttribute('data-affix');
-        if (type === 'prefix') selectedPrefix = null;
-        else selectedSuffix = null;
-    } else {
-        element.classList.add('selected');
-        element.setAttribute('data-affix', affix); // Store affix value for deselection
-        if (type === 'prefix') selectedPrefix = affix;
-        else selectedSuffix = affix;
-    }
-
-    updateWordConstructionArea();
-}
-
-function updateWordConstructionArea() {
-    wordConstructionArea.innerHTML = '';
-
-    const parts = [];
-    if (selectedPrefix) {
-        parts.push({ type: 'prefix', value: selectedPrefix.slice(0, -1) }); // Remove hyphen
-    }
-    parts.push({ type: 'base', value: currentBaseWordData.word });
-    if (selectedSuffix) {
-        parts.push({ type: 'suffix', value: selectedSuffix.slice(1) }); // Remove hyphen
-    }
-
-    parts.forEach(part => {
-        const span = document.createElement('span');
-        span.classList.add('construction-part', part.type);
-        span.textContent = part.value;
-        wordConstructionArea.appendChild(span);
-    });
-
-    // Automatically build the word string for check, but don't show it yet
-    constructedWord = parts.map(p => p.value).join('').toLowerCase();
-}
-
-function resetWordConstruction() {
-    selectedPrefix = null;
-    selectedSuffix = null;
-    constructedWord = '';
-    wordConstructionArea.innerHTML = ''; // Clear visual construction area
-    // Always show the base word in the construction area
-    if (currentBaseWordData) {
-        wordConstructionArea.innerHTML = `<span class="construction-part base">${currentBaseWordData.word}</span>`;
-    }
-
-    // Remove 'selected' class from all affix items
-    document.querySelectorAll('.affix-item.selected').forEach(item => {
-        item.classList.remove('selected');
-        item.removeAttribute('data-affix');
-    });
-    feedbackMessage.textContent = ''; // Clear feedback
-}
-
-function buildAndCheckWord() {
-    // Only proceed if there's a selected prefix OR suffix (or both)
-    if (!selectedPrefix && !selectedSuffix) {
-        showFeedback("Please select at least one affix to build a new word!", 'incorrect');
-        return;
-    }
-
-    if (constructedWord === currentBaseWordData.word.toLowerCase()) {
-        showFeedback("That's the base word! Try combining affixes.", 'incorrect');
-        return;
-    }
-
-    if (foundWordsForCurrentBase.has(constructedWord)) {
-        showFeedback("You've already found that word!", 'incorrect');
-        resetWordConstruction();
-        return;
-    }
-
-    const foundDerivative = currentBaseWordData.derivatives.find(d => d.word.toLowerCase() === constructedWord);
-
-    if (foundDerivative) {
-        showFeedback("Correct! You found a new word!", 'correct');
-        totalScore += 10; // Award points
-        foundWordsForCurrentBase.add(constructedWord);
-        addWordToFoundList(foundDerivative);
-        updateScoreDisplay();
-        resetWordConstruction(); // Clear for next word
-    } else {
-        showFeedback(`"${constructedWord}" is not a valid word or not derivable from "${currentBaseWordData.word}".`, 'incorrect');
-        // Optionally, don't reset immediately, let them correct it
-    }
-}
-
-function addWordToFoundList(derivative) {
-    const li = document.createElement('li');
-    li.innerHTML = `
-        <span class="word">${derivative.word}</span>
-        <span class="level ${derivative.level}">${derivative.level}</span>
-        <span class="definition">${derivative.definition}</span>
-    `;
-    foundWordsList.prepend(li); // Add to the top of the list
-}
-
-function updateScoreDisplay() {
-    const foundCount = foundWordsForCurrentBase.size;
-    const totalPossible = currentBaseWordData ? currentBaseWordData.derivatives.length : 0;
-    scoreDisplay.textContent = `Score: ${totalScore} | Words Found: ${foundCount} / ${totalPossible}`;
-}
-
-function showFeedback(message, type) {
-    feedbackMessage.textContent = message;
-    feedbackMessage.className = `feedback ${type}`; // Apply class for styling
-}
-
-// --- Event Listeners ---
-buildWordBtn.addEventListener('click', buildAndCheckWord);
-resetWordBtn.addEventListener('click', resetWordConstruction);
-
-nextWordBtn.addEventListener('click', () => {
-    // Go back to the word selection screen
-    showScreen('wordSelectionScreen');
-    currentBaseWordData = null; // Clear current word data
-    // Optionally, reset total score if you want score per word selected
-    totalScore = 0; // Reset total score when changing base word
-    updateScoreDisplay();
-    renderBaseWordSelection(); // Re-render in case you add more words dynamically
-});
-
-// --- Start the game ---
-initGame();
