@@ -42,7 +42,7 @@ body {
 
 .teacher-image {
     width: 90px; /* Slightly wider than height for an oval */
-    height: 70px; /* Slightly shorter than width for an oval */
+    height: 90px; /* Slightly shorter than width for an oval */
     border-radius: 50%; /* Makes it oval if width/height are different */
     object-fit: cover; /* Ensures the image covers the area without distortion */
     border: 2px solid #5cb85c; /* Green border around the image */
