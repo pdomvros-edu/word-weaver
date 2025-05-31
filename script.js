@@ -45,6 +45,7 @@ const gameData = {
       derivatives: [
         { word: "belief", level: "A2", definition: "An acceptance that something exists or is true." },
         { word: "unbelievable", level: "B1", definition: "Not able to be believed; extraordinary." },
+        { word: "believable", level: "B2", definition: "able to be believed" },
         { word: "believer", level: "B1", definition: "A person who believes in a particular thing." },
         { word: "disbelieve", level: "B2", definition: "To be unable to believe something." }
       ]
@@ -697,20 +698,24 @@ const elements = {
   baseWordSelectionGrid: document.getElementById('baseWordSelectionGrid'),
   gameScreen: document.getElementById('gameScreen'),
   baseWordDisplay: document.getElementById('baseWordDisplay'),
-  prefixList: document.getElementById('prefixList'),   // ← must match index.html IDs exactly :contentReference[oaicite:5]{index=5}
-  suffixList: document.getElementById('suffixList'),   // ← must match index.html IDs exactly :contentReference[oaicite:6]{index=6}
+  prefixList: document.getElementById('prefixList'),
+  suffixList: document.getElementById('suffixList'),
   wordConstructionArea: document.getElementById('wordConstructionArea'),
   buildWordBtn: document.getElementById('buildWordBtn'),
   resetWordBtn: document.getElementById('resetWordBtn'),
   nextWordBtn: document.getElementById('nextWordBtn'),
   feedbackMessage: document.getElementById('feedbackMessage'),
   scoreDisplay: document.getElementById('scoreDisplay'),
-  foundWordsList: document.getElementById('foundWordsList')
+  foundWordsList: document.getElementById('foundWordsList'),
+
+  // —— Added for “Manual Override” —— 
+  editWordBtn: document.getElementById('editWordBtn'),
+  manualWordInput: document.getElementById('manualWordInput'),
 };
 
-/************************
- * 3. GAME STATE (vars) *
- ************************/
+ /************************
+  * 3. GAME STATE (vars) *
+  ************************/
 let currentBaseWordData = null;
 let foundWordsForCurrentBase = new Set();
 let totalScore = 0;
@@ -718,16 +723,64 @@ let selectedPrefix = null;
 let selectedSuffix = null;
 let constructedWord = '';
 
-/***************************************
- * 4. HELPER FUNCTIONS (Utility, UI)   *
- ***************************************/
+ /***************************************
+  * 4. HELPER FUNCTIONS (Utility, UI)   *
+  ***************************************/
 
-/**
- * Remove leading/trailing hyphens from an affix string.
- * E.g. "-re" → "re", "ing-" → "ing".
- */
+ /**
+  * Remove leading/trailing hyphens from an affix string.
+  * E.g. "-re" → "re", "ing-" → "ing".
+  */
 function cleanAffix(affix) {
   return affix.replace(/^-+|-+$/g, '');
+}
+
+/**
+ * (NEW) getModifiedStem(baseWord, cleanSuffix)
+ *
+ * Returns a possibly‐altered “stem” of baseWord before suffixation,
+ * according to a few common English spelling rules:
+ *   1. Ends in "y" + suffix starts with vowel → drop "y", add "i"
+ *   2. Ends in silent "e" + suffix starts with vowel → drop "e"
+ *   3. CVC pattern + suffix is "ing"/"ed" → double final consonant (if not w/x/y)
+ *   4. Otherwise, return lowercase baseWord
+ */
+function getModifiedStem(baseWord, cleanSuffix) {
+  const lowerBase = baseWord.toLowerCase();
+  const lowerSuffix = cleanSuffix.toLowerCase();
+  const isVowel = (ch) => "aeiou".includes(ch);
+
+  // 1. "y" → "i" when suffix starts with vowel
+  if (lowerBase.endsWith("y") && lowerSuffix.length > 0 && isVowel(lowerSuffix[0])) {
+    return lowerBase.slice(0, -1) + "i";
+  }
+
+  // 2. Drop silent "e" when suffix starts with vowel
+  if (lowerBase.endsWith("e") && lowerSuffix.length > 0 && isVowel(lowerSuffix[0])) {
+    const stem = lowerBase.slice(0, -1);
+    return stem.length >= 2 ? stem : lowerBase;
+  }
+
+  // 3. CVC pattern + suffix "ing" or "ed": double final consonant
+  if (lowerSuffix === "ing" || lowerSuffix === "ed") {
+    if (lowerBase.length >= 3) {
+      const c1 = lowerBase.charAt(lowerBase.length - 3);
+      const v  = lowerBase.charAt(lowerBase.length - 2);
+      const c2 = lowerBase.charAt(lowerBase.length - 1);
+      const consonants = "bcdfghjklmnpqrstvwxyz";
+      if (
+        consonants.includes(c1) &&
+        "aeiou".includes(v) &&
+        consonants.includes(c2) &&
+        !"wxy".includes(c2)
+      ) {
+        return lowerBase + c2; // e.g. run → runn
+      }
+    }
+  }
+
+  // 4. Default: no change
+  return lowerBase;
 }
 
 /**
@@ -759,19 +812,10 @@ function updateScoreDisplay() {
   elements.scoreDisplay.textContent = `Score: ${totalScore} | Words Found: ${foundCount}/${totalPossible}`;
 }
 
-/**********************************************
- * 5. INITIALIZATION AND BASE‐WORD RENDERING  *
- **********************************************/
+ /**********************************************
+  * 5. INITIALIZATION AND BASE‐WORD RENDERING  *
+  **********************************************/
 
-/**
- * Called once when DOMContentLoaded fires.
- * 1. Verify critical DOM elements are present. 
- * 2. Sort base words alphabetically. 
- * 3. Render buttons for each base word on the 'wordSelectionScreen'.
- * 4. Show the word selection screen.
- * 5. Pre‐populate affix lists so that, once the user selects a base word
- *    and gameScreen is shown, prefixes/suffixes are already “ready to go.”
- */
 function initGame() {
   console.log("1. initGame() called.");
 
@@ -784,32 +828,27 @@ function initGame() {
   }
   console.log("2. All required DOM elements found.");
 
-  // 2. Sort base words (so they appear in alphabetical order)
+  // 2. Sort base words
   gameData.base_words.sort((a, b) => a.word.localeCompare(b.word));
   console.log("3. Base words sorted.");
 
-  // 3. Create a <button> for each base word and append to the selection grid
+  // 3. Render base‐word buttons
   renderBaseWordSelection();
   console.log("4. renderBaseWordSelection() called.");
 
-  // 4. Show the word selection screen by default
+  // 4. Show selection screen by default
   showScreen('wordSelectionScreen');
   console.log("5. Displaying the wordSelectionScreen.");
 
-  // 5. Pre‐render the affix lists (so when gameScreen is shown later, they’re populated)
-  //    → This ensures that `prefixList` & `suffixList` are never empty once we switch screens.
+  // 5. Pre‐render affix lists (makes prefixes/suffixes ready on gameScreen)
   renderAffixes();
-  console.log("6. renderAffixes() pre‐called (prefixes & suffixes are ready).");
+  console.log("6. renderAffixes() pre‐called (prefixes & suffixes ready).");
 
-  // 6. Update the score display (will show “Score: 0 | Words Found: 0/0” initially)
+  // 6. Update initial score display
   updateScoreDisplay();
   console.log("7. Score display initialized.");
 }
 
-/**
- * Create and append one <button> per base word.
- * Each button’s text is e.g. “create”, “agree”, etc., and the click handler is selectBaseWord().
- */
 function renderBaseWordSelection() {
   console.log("8. renderBaseWordSelection() started.");
   elements.baseWordSelectionGrid.innerHTML = ''; // Clear previous buttons
@@ -825,19 +864,6 @@ function renderBaseWordSelection() {
   console.log("9. Base word buttons rendered. Count:", gameData.base_words.length);
 }
 
-/********************************************
- * 6. BASE‐WORD SELECTION & GAME SETUP LOGIC *
- ********************************************/
-
-/**
- * Called when the user clicks on a base‐word button.
- * 1. Validate that wordData is non-null and contains derivatives[].
- * 2. Store the selected base‐word in currentBaseWordData.
- * 3. Clear any previously found words & feedback.
- * 4. Reset the “Word Construction Area” to show just the base word initially.
- * 5. Call renderAffixes() (again)—this ensures any prior selections are cleared.
- * 6. Show the game screen, update the display of “Score” & base‐word.
- */
 function selectBaseWord(wordData) {
   console.log("10. selectBaseWord() called with:", wordData.word);
 
@@ -848,43 +874,34 @@ function selectBaseWord(wordData) {
   }
   console.log("11. Word data is valid.");
 
-  // 2. Set the current base‐word & reset found‐words for this base word
+  // 2. Set current base & reset found‐words
   currentBaseWordData = wordData;
   foundWordsForCurrentBase.clear();
   elements.foundWordsList.innerHTML = ''; 
   clearFeedback();
 
-  // 3. Reset Construction Area (show just the base word)
+  // 3. Reset Construction Area (show only base)
   resetWordConstruction();
 
-  // 4. Populate affixes (prefix & suffix lists) and clear any previous “selected” states
+  // 4. Populate affixes & clear any prior “.selected”
   renderAffixes();
   console.log("12. renderAffixes() re‐called from selectBaseWord().");
 
-  // 5. Update the on‐screen base word (e.g. “create” → “CREATE”)
+  // 5. Update on‐screen base word
   elements.baseWordDisplay.textContent = currentBaseWordData.word;
 
-  // 6. Switch to the game screen (un‐hide it). Affixes are already in DOM.
+  // 6. Switch to game screen
   showScreen('gameScreen');
   console.log("13. Switched to gameScreen for base word:", currentBaseWordData.word);
 
-  // 7. Update the score display to “Score: 0 | Words Found: 0 / <# derivatives>”
+  // 7. Update on‐screen score
   updateScoreDisplay();
 }
 
-/******************************************
- * 7. RENDER PREFIXES & SUFFIXES (UI)     *
- ******************************************/
-
-/**
- * Build out the <span> elements inside #prefixList and #suffixList.
- * Each affix becomes <span class="affix-item prefix-item">anti-</span> (or “-able”), etc.
- * Clicking a prefix <span> runs toggleAffixSelection(prefix, 'prefix', element).
- */
 function renderAffixes() {
   console.log("14. renderAffixes() started.");
 
-  // Clear any previous items
+  // Clear old lists
   elements.prefixList.innerHTML = '';
   elements.suffixList.innerHTML = '';
   console.log("15. Cleared old affix‐lists.");
@@ -922,25 +939,13 @@ function renderAffixes() {
   console.log("20. Exiting renderAffixes().");
 }
 
-/***********************************************************
- * 8. AFFIX SELECTION (toggle between “selected” / not)    *
- ***********************************************************/
-
-/**
- * Called when the user clicks on a prefix or suffix <span>.
- * - If they click the same affix again, it deselects it.
- * - Otherwise, it sets selectedPrefix or selectedSuffix, and ensures only one of each type is “.selected”.
- * - Then calls updateWordConstructionArea() to redraw “prefix + base + suffix” in the construction area.
- */
 function toggleAffixSelection(affix, type, element) {
   console.log("21. toggleAffixSelection() called for:", affix, type);
 
   if (type === 'prefix') {
-    // If the clicked prefix is already selected, unselect it.
     if (selectedPrefix === affix) {
       selectedPrefix = null;
     } else {
-      // Otherwise, set it as the selected prefix and unselect any other prefix‐span:
       selectedPrefix = affix;
       document.querySelectorAll('.prefix-item.selected').forEach(el => {
         if (el !== element) {
@@ -948,10 +953,8 @@ function toggleAffixSelection(affix, type, element) {
         }
       });
     }
-    // Toggle “.selected” class on the clicked element
     element.classList.toggle('selected', selectedPrefix === affix);
   } else {
-    // Suffix logic is analogous:
     if (selectedSuffix === affix) {
       selectedSuffix = null;
     } else {
@@ -965,49 +968,50 @@ function toggleAffixSelection(affix, type, element) {
     element.classList.toggle('selected', selectedSuffix === affix);
   }
 
-  // After updating selection, redraw the “Word Construction Area”
+  // (NEW) If the user clicked on “Edit” previously, abort that state because
+  // they are re‐selecting affixes now
+  if (!elements.manualWordInput.classList.contains('hidden')) {
+    // hide manual input, show spans again
+    elements.manualWordInput.classList.add('hidden');
+    elements.wordConstructionArea.classList.remove('hidden');
+    elements.editWordBtn.textContent = "✎ Edit";
+  }
+
+  // Re‐draw the “Word Construction Area” with possible auto stem
   updateWordConstructionArea();
 }
 
-/**************************************************
- * 9. UPDATE “WORD CONSTRUCTION AREA” (UI REFRESH) *
- **************************************************/
-
-/**
- * Redraws the “prefix + base + suffix” at the very top of the game screen.
- * - Clears wordConstructionArea.innerHTML.
- * - Builds `constructedWord` by concatenating:
- *     [cleanAffix(selectedPrefix)] + [base word’s lowercase] + [cleanAffix(selectedSuffix)]
- * - Appends one <span class="construction-part prefix">…</span> (or “base” or “suffix”) per piece.
- */
 function updateWordConstructionArea() {
   console.log("22. updateWordConstructionArea() called.");
-  elements.wordConstructionArea.innerHTML = ''; 
+  elements.wordConstructionArea.innerHTML = '';
   constructedWord = '';
 
   const parts = [];
 
-  // 1. If a prefix is selected, add it (without leading/trailing “-”)
+  // 1. Prefix (no hyphens)
   if (selectedPrefix) {
     const prefixValue = cleanAffix(selectedPrefix);
     parts.push({ type: 'prefix', value: prefixValue });
     constructedWord += prefixValue;
   }
 
-  // 2. Always add the base word (in lowercase)
+  // 2. Base—but use getModifiedStem(...) first
   if (currentBaseWordData) {
-    parts.push({ type: 'base', value: currentBaseWordData.word });
-    constructedWord += currentBaseWordData.word.toLowerCase();
+    const cleanSuffix = selectedSuffix ? cleanAffix(selectedSuffix) : "";
+    const modifiedStem = getModifiedStem(currentBaseWordData.word, cleanSuffix);
+
+    parts.push({ type: 'base', value: modifiedStem });
+    constructedWord += modifiedStem;
   }
 
-  // 3. If a suffix is selected, add it (without leading/trailing “-”)
+  // 3. Suffix (no hyphens)
   if (selectedSuffix) {
     const suffixValue = cleanAffix(selectedSuffix);
     parts.push({ type: 'suffix', value: suffixValue });
     constructedWord += suffixValue;
   }
 
-  // 4. Create one <span> per part and append to wordConstructionArea
+  // 4. Build one span per part
   parts.forEach(part => {
     const span = document.createElement('span');
     span.classList.add('construction-part', part.type);
@@ -1016,17 +1020,6 @@ function updateWordConstructionArea() {
   });
 }
 
-/***********************************************
- * 10. RESET “WORD CONSTRUCTION AREA” to base   *
- ***********************************************/
-
-/**
- * Called when the user clicks “Reset Word”.
- * - Clears any previously selected prefix/suffix.
- * - Clears existing .selected on all affix‐items.
- * - Resets the Construction Area to show only the base word.
- * - Clears any feedback message.
- */
 function resetWordConstruction() {
   console.log("23. resetWordConstruction() called.");
 
@@ -1034,41 +1027,36 @@ function resetWordConstruction() {
   selectedSuffix = null;
   constructedWord = '';
 
-  // Remove “.selected” from any previously selected affix items
   document.querySelectorAll('.affix-item.selected').forEach(el => {
     el.classList.remove('selected');
   });
 
-  // Re‐draw the Construction Area to show only the base word (if selected)
   elements.wordConstructionArea.innerHTML = '';
   if (currentBaseWordData) {
     const span = document.createElement('span');
     span.classList.add('construction-part', 'base');
     span.textContent = currentBaseWordData.word;
     elements.wordConstructionArea.appendChild(span);
-  } else {
-    // If no base word chosen yet, leave it blank
-    elements.wordConstructionArea.innerHTML = '';
+  }
+
+  // If we were in “edit” mode, revert to normal:
+  if (!elements.manualWordInput.classList.contains('hidden')) {
+    elements.manualWordInput.classList.add('hidden');
+    elements.wordConstructionArea.classList.remove('hidden');
+    elements.editWordBtn.textContent = "✎ Edit";
   }
 
   clearFeedback();
 }
 
-/***********************************************
- * 11. BUILD & CHECK THE CONSTRUCTED WORD      *
- ***********************************************/
-
-/**
- * Called when the user clicks “Build Word”.
- * - If neither prefix nor suffix is selected, show an error.
- * - If the user has not changed the base (constructedWord === base), show an error.
- * - If the constructed word was already found, show an error and reset.
- * - Otherwise, check if constructedWord matches one of the derivatives.
- *     • If correct: show positive feedback, award 10 points, add to found list, reset construction.
- *     • If incorrect: show “not valid” feedback (but keep prefix/suffix selected so user can try again).
- */
 function buildAndCheckWord() {
   console.log("24. buildAndCheckWord() called.");
+
+  // (NEW) If the manual input is visible, prompt them to confirm override first
+  if (!elements.manualWordInput.classList.contains('hidden')) {
+    showFeedback("Press ✔ to confirm your edited word, then click Build.", 'incorrect');
+    return;
+  }
 
   // 1. Must pick at least one affix
   if (!selectedPrefix && !selectedSuffix) {
@@ -1076,26 +1064,27 @@ function buildAndCheckWord() {
     return;
   }
 
-  // 2. If the user only shows the base word (no actual change), prompt them
-  if (constructedWord === currentBaseWordData.word.toLowerCase()) {
+  // 2. If the user only shows the original base (no actual change)
+  const cleanSuffixForCheck = selectedSuffix ? cleanAffix(selectedSuffix) : "";
+  const modifiedStemForCheck = getModifiedStem(currentBaseWordData.word, cleanSuffixForCheck);
+  if (modifiedStemForCheck === currentBaseWordData.word.toLowerCase() && !selectedPrefix) {
     showFeedback("That's the base word! Try combining affixes.", 'incorrect');
     return;
   }
 
-  // 3. If already found, tell them and reset the construction area
+  // 3. If already found, tell them and reset
   if (foundWordsForCurrentBase.has(constructedWord)) {
     showFeedback("You've already found that word!", 'incorrect');
     resetWordConstruction();
     return;
   }
 
-  // 4. Check against the derivatives[] for a match (case‐insensitive)
+  // 4. Check against derivatives[]
   const foundDerivative = currentBaseWordData.derivatives.find(d =>
     d.word.toLowerCase() === constructedWord.toLowerCase()
   );
 
   if (foundDerivative) {
-    // CORRECT!
     showFeedback(`Correct! "${constructedWord}" is a valid word!`, 'correct');
     totalScore += 10;
     foundWordsForCurrentBase.add(constructedWord.toLowerCase());
@@ -1103,23 +1092,10 @@ function buildAndCheckWord() {
     updateScoreDisplay();
     resetWordConstruction();
   } else {
-    // INCORRECT!
     showFeedback(`"${constructedWord}" is not a valid derivative of "${currentBaseWordData.word}".`, 'incorrect');
   }
 }
 
-/******************************************************
- * 12. ADD A NEWLY FOUND WORD TO THE “Found Words” UI *
- ******************************************************/
-
-/**
- * When the user correctly builds a word, prepend a new <li> to #foundWordsList:
- * <li>
- *   <span class="word">CREATION</span>
- *   <span class="level B1">B1</span>
- *   <span class="definition">…</span>
- * </li>
- */
 function addWordToFoundList(derivative) {
   console.log("25. addWordToFoundList() called for:", derivative.word);
   const li = document.createElement('li');
@@ -1131,24 +1107,37 @@ function addWordToFoundList(derivative) {
   elements.foundWordsList.prepend(li);
 }
 
-/*************************************
- * 13. SHOW FEEDBACK (CORRECT/ERROR) *
- *************************************/
-
-/**
- * Display a message in #feedbackMessage and apply either .correct or .incorrect class.
- */
 function showFeedback(message, type) {
   console.log("26. showFeedback() called:", message, type);
   elements.feedbackMessage.textContent = message;
   elements.feedbackMessage.className = `feedback ${type}`;
 }
 
-/**************************************
- * 14. EVENT LISTENERS (BUTTON CLICKS)*
- **************************************/
 elements.buildWordBtn.addEventListener('click', buildAndCheckWord);
 elements.resetWordBtn.addEventListener('click', resetWordConstruction);
+
+// —— (NEW) Manual Override “Edit” Button Logic ——
+elements.editWordBtn.addEventListener('click', () => {
+  // If the input is hidden → reveal it and allow editing
+  if (elements.manualWordInput.classList.contains('hidden')) {
+    elements.manualWordInput.value = constructedWord;
+    elements.wordConstructionArea.classList.add('hidden');
+    elements.manualWordInput.classList.remove('hidden');
+    elements.editWordBtn.textContent = "✔";
+  } else {
+    // User clicked “✔” → confirm their override
+    constructedWord = elements.manualWordInput.value.trim().toLowerCase();
+    elements.manualWordInput.classList.add('hidden');
+    elements.wordConstructionArea.classList.remove('hidden');
+    elements.wordConstructionArea.innerHTML = "";
+    const overrideSpan = document.createElement('span');
+    overrideSpan.classList.add('construction-part', 'override');
+    overrideSpan.textContent = constructedWord;
+    elements.wordConstructionArea.appendChild(overrideSpan);
+    elements.editWordBtn.textContent = "✎ Edit";
+  }
+});
+
 elements.nextWordBtn.addEventListener('click', () => {
   console.log("27. Next Base Word button clicked.");
   showScreen('wordSelectionScreen');

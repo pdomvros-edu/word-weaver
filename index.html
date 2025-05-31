@@ -44,6 +44,11 @@
 
             <!-- Where prefix + base + suffix show up -->
             <div class="section-header">Word Construction Area</div>
+
+            <!-- ✎ Edit button and hidden input for manual override -->
+            <button id="editWordBtn" class="small-btn">✎ Edit</button>
+            <input type="text" id="manualWordInput" class="hidden" />
+
             <div class="word‐construction‐area" id="wordConstructionArea">
                 <!-- JavaScript will insert a <span class="construction-part base">…</span> here -->
             </div>
@@ -63,11 +68,11 @@
 
             <!-- ===== Prefix List ===== -->
             <div class="section-header">Prefixes</div>
-            <div class="affix‐list" id="prefixList"></div> <!-- ← ID must exactly match script.js :contentReference[oaicite:0]{index=0} -->
+            <div class="affix‐list" id="prefixList"></div>
 
             <!-- ===== Suffix List ===== -->
             <div class="section-header">Suffixes</div>
-            <div class="affix‐list" id="suffixList"></div> <!-- ← ID must exactly match script.js :contentReference[oaicite:1]{index=1} -->
+            <div class="affix‐list" id="suffixList"></div>
         </div>
 
         <div class="sidebar">
