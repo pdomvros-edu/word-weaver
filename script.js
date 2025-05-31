@@ -293,17 +293,17 @@ const gameData = {
             ]
         },
         {
-            word: "industry",
-            level: "B2",
-            derivatives: [
-                { word: "industrial", level: "B2", definition: "Relating to industry." },
-                { word: "industrialize", level: "C1", definition: "Develop industries in (a country or region) on a wide scale." },
-                { word: "industrialization", level: "C2", definition: "The development of industries in a country or region on a wide scale." },
-                { word: "industrious", level: "C1", definition: "Diligent and hard-working." }
-            ]
-        }
-        {
-        word: "establish",
+            word: "industry",
+            level: "B2",
+            derivatives: [
+                { word: "industrial", level: "B2", definition: "Relating to industry." },
+                { word: "industrialize", level: "C1", definition: "Develop industries in (a country or region) on a wide scale." },
+                { word: "industrialization", level: "C2", definition: "The development of industries in a country or region on a wide scale." },
+                { word: "industrious", level: "C1", definition: "Diligent and hard-working." }
+            ]
+        } // Add comma here!
+        {
+        word: "establish",
         level: "B2",
         derivatives: [
             { word: "establishment", level: "B2", definition: "The act of establishing something or being established." },
