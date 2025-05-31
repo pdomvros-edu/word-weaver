@@ -687,11 +687,11 @@ const gameData = {
     ]
 };
 
+
 // DOM Elements
 const wordSelectionScreen = document.getElementById('wordSelectionScreen');
 const baseWordSelectionGrid = document.getElementById('baseWordSelectionGrid');
 const gameScreen = document.getElementById('gameScreen');
-
 const baseWordDisplay = document.getElementById('baseWordDisplay');
 const prefixList = document.getElementById('prefixList');
 const suffixList = document.getElementById('suffixList');
@@ -703,16 +703,19 @@ const feedbackMessage = document.getElementById('feedbackMessage');
 const scoreDisplay = document.getElementById('scoreDisplay');
 const foundWordsList = document.getElementById('foundWordsList');
 
+// Game State
 let currentBaseWordData = null;
 let foundWordsForCurrentBase = new Set();
 let totalScore = 0;
-
-// State for building a word
 let selectedPrefix = null;
 let selectedSuffix = null;
-let constructedWord = ''; // The actual word string built for checking
+let constructedWord = '';
 
-// --- Screen Management ---
+// Helper Functions
+function cleanAffix(affix) {
+    return affix.replace(/^-|-$/g, '');
+}
+
 function showScreen(screenId) {
     document.querySelectorAll('.screen').forEach(screen => {
         screen.classList.add('hidden');
@@ -720,99 +723,113 @@ function showScreen(screenId) {
     document.getElementById(screenId).classList.remove('hidden');
 }
 
-// --- Game Initialization ---
-function initGame() {
-    // Sort base words alphabetically before rendering
-    gameData.base_words.sort((a, b) => a.word.localeCompare(b.word));
+function clearFeedback() {
+    feedbackMessage.textContent = '';
+    feedbackMessage.className = 'feedback';
+}
 
+// Game Initialization
+function initGame() {
+    gameData.base_words.sort((a, b) => a.word.localeCompare(b.word));
     renderBaseWordSelection();
     showScreen('wordSelectionScreen');
     updateScoreDisplay();
 }
 
 function renderBaseWordSelection() {
-    baseWordSelectionGrid.innerHTML = ''; // Clear existing content
+    baseWordSelectionGrid.innerHTML = '';
     gameData.base_words.forEach(wordData => {
         const button = document.createElement('button');
         button.classList.add('word-select-btn');
-        button.innerHTML = wordData.word;
-        button.onclick = () => selectBaseWord(wordData);
+        button.textContent = wordData.word;
+        button.addEventListener('click', () => selectBaseWord(wordData));
         baseWordSelectionGrid.appendChild(button);
     });
 }
 
 function selectBaseWord(wordData) {
+    if (!wordData?.word || !Array.isArray(wordData.derivatives)) {
+        console.error('Invalid word data:', wordData);
+        return;
+    }
+
     currentBaseWordData = wordData;
-    foundWordsForCurrentBase.clear(); // Reset found words for new base word
-    foundWordsList.innerHTML = ''; // Clear the displayed list
-    totalScore = 0; // Reset score for a new game session on a new word
-    updateScoreDisplay();
+    foundWordsForCurrentBase.clear();
+    foundWordsList.innerHTML = '';
+    clearFeedback();
     resetWordConstruction();
     renderAffixes();
+    
     baseWordDisplay.textContent = currentBaseWordData.word;
     showScreen('gameScreen');
-    feedbackMessage.textContent = ''; // Clear previous feedback
+    updateScoreDisplay();
 }
+
 function renderAffixes() {
     prefixList.innerHTML = '';
     gameData.common_prefixes.forEach(prefix => {
         const span = document.createElement('span');
-        span.classList.add('affix-item');
+        span.classList.add('affix-item', 'prefix-item');
         span.textContent = prefix;
-        span.onclick = () => selectAffix(prefix, 'prefix', span);
+        span.addEventListener('click', () => toggleAffixSelection(prefix, 'prefix', span));
         prefixList.appendChild(span);
     });
 
     suffixList.innerHTML = '';
     gameData.common_suffixes.forEach(suffix => {
         const span = document.createElement('span');
-        span.classList.add('affix-item');
+        span.classList.add('affix-item', 'suffix-item');
         span.textContent = suffix;
-        span.onclick = () => selectAffix(suffix, 'suffix', span);
+        span.addEventListener('click', () => toggleAffixSelection(suffix, 'suffix', span));
         suffixList.appendChild(span);
     });
 }
 
-function selectAffix(affix, type, element) {
+function toggleAffixSelection(affix, type, element) {
     if (type === 'prefix') {
         if (selectedPrefix === affix) {
             selectedPrefix = null;
-            element.classList.remove('selected');
-            element.removeAttribute('data-affix');
         } else {
-            const prevSelected = document.querySelector(`.affix-item.selected[data-affix][class*="prefix"]`);
-            if (prevSelected) prevSelected.classList.remove('selected');
             selectedPrefix = affix;
-            element.classList.add('selected');
-            element.setAttribute('data-affix', affix);
+            // Only allow one prefix selection
+            document.querySelectorAll('.prefix-item.selected').forEach(el => {
+                el.classList.remove('selected');
+            });
         }
-    } else { // type === 'suffix'
+        element.classList.toggle('selected', selectedPrefix === affix);
+    } else {
         if (selectedSuffix === affix) {
             selectedSuffix = null;
-            element.classList.remove('selected');
-            element.removeAttribute('data-affix');
         } else {
-            const prevSelected = document.querySelector(`.affix-item.selected[data-affix][class*="suffix"]`);
-            if (prevSelected) prevSelected.classList.remove('selected');
             selectedSuffix = affix;
-            element.classList.add('selected');
-            element.setAttribute('data-affix', affix);
+            // Only allow one suffix selection
+            document.querySelectorAll('.suffix-item.selected').forEach(el => {
+                el.classList.remove('selected');
+            });
         }
+        element.classList.toggle('selected', selectedSuffix === affix);
     }
-
     updateWordConstructionArea();
 }
 
 function updateWordConstructionArea() {
     wordConstructionArea.innerHTML = '';
+    constructedWord = '';
 
     const parts = [];
     if (selectedPrefix) {
-        parts.push({ type: 'prefix', value: selectedPrefix.slice(0, -1) }); // Remove hyphen
+        const prefixValue = cleanAffix(selectedPrefix);
+        parts.push({ type: 'prefix', value: prefixValue });
+        constructedWord += prefixValue;
     }
+
     parts.push({ type: 'base', value: currentBaseWordData.word });
+    constructedWord += currentBaseWordData.word.toLowerCase();
+
     if (selectedSuffix) {
-        parts.push({ type: 'suffix', value: selectedSuffix.slice(1) }); // Remove hyphen
+        const suffixValue = cleanAffix(selectedSuffix);
+        parts.push({ type: 'suffix', value: suffixValue });
+        constructedWord += suffixValue;
     }
 
     parts.forEach(part => {
@@ -821,31 +838,24 @@ function updateWordConstructionArea() {
         span.textContent = part.value;
         wordConstructionArea.appendChild(span);
     });
-
-    // Automatically build the word string for check, but don't show it yet
-    constructedWord = parts.map(p => p.value).join('').toLowerCase();
 }
 
 function resetWordConstruction() {
     selectedPrefix = null;
     selectedSuffix = null;
     constructedWord = '';
-    wordConstructionArea.innerHTML = ''; // Clear visual construction area
-    // Always show the base word in the construction area
-    if (currentBaseWordData) {
-        wordConstructionArea.innerHTML = `<span class="construction-part base">${currentBaseWordData.word}</span>`;
-    }
-
-    // Remove 'selected' class from all affix items
-    document.querySelectorAll('.affix-item.selected').forEach(item => {
-        item.classList.remove('selected');
-        item.removeAttribute('data-affix');
+    
+    document.querySelectorAll('.affix-item.selected').forEach(el => {
+        el.classList.remove('selected');
     });
-    feedbackMessage.textContent = ''; // Clear feedback
+    
+    wordConstructionArea.innerHTML = `
+        <span class="construction-part base">${currentBaseWordData?.word || ''}</span>
+    `;
+    clearFeedback();
 }
 
 function buildAndCheckWord() {
-    // Only proceed if there's a selected prefix OR suffix (or both)
     if (!selectedPrefix && !selectedSuffix) {
         showFeedback("Please select at least one affix to build a new word!", 'incorrect');
         return;
@@ -862,17 +872,19 @@ function buildAndCheckWord() {
         return;
     }
 
-    const foundDerivative = currentBaseWordData.derivatives.find(d => d.word.toLowerCase() === constructedWord);
+    const foundDerivative = currentBaseWordData.derivatives.find(d => 
+        d.word.toLowerCase() === constructedWord.toLowerCase()
+    );
 
     if (foundDerivative) {
-        showFeedback("Correct! You found a new word!", 'correct');
-        totalScore += 10; // Award points
-        foundWordsForCurrentBase.add(constructedWord);
+        showFeedback(`Correct! "${constructedWord}" is a valid word!`, 'correct');
+        totalScore += 10;
+        foundWordsForCurrentBase.add(constructedWord.toLowerCase());
         addWordToFoundList(foundDerivative);
         updateScoreDisplay();
-        resetWordConstruction(); // Clear for next word
+        resetWordConstruction();
     } else {
-        showFeedback(`"${constructedWord}" is not a valid word or not derivable from "${currentBaseWordData.word}".`, 'incorrect');
+        showFeedback(`"${constructedWord}" is not a valid derivative of "${currentBaseWordData.word}".`, 'incorrect');
     }
 }
 
@@ -883,32 +895,27 @@ function addWordToFoundList(derivative) {
         <span class="level ${derivative.level}">${derivative.level}</span>
         <span class="definition">${derivative.definition}</span>
     `;
-    foundWordsList.prepend(li); // Add to the top of the list
+    foundWordsList.prepend(li);
 }
 
 function updateScoreDisplay() {
     const foundCount = foundWordsForCurrentBase.size;
-    const totalPossible = currentBaseWordData ? currentBaseWordData.derivatives.length : 0;
-    scoreDisplay.textContent = `Score: ${totalScore} | Words Found: ${foundCount} / ${totalPossible}`;
+    const totalPossible = currentBaseWordData?.derivatives.length || 0;
+    scoreDisplay.textContent = `Score: ${totalScore} | Words Found: ${foundCount}/${totalPossible}`;
 }
 
 function showFeedback(message, type) {
     feedbackMessage.textContent = message;
-    feedbackMessage.className = `feedback ${type}`; // Apply class for styling
+    feedbackMessage.className = `feedback ${type}`;
 }
 
-// --- Event Listeners ---
+// Event Listeners
 buildWordBtn.addEventListener('click', buildAndCheckWord);
 resetWordBtn.addEventListener('click', resetWordConstruction);
-
 nextWordBtn.addEventListener('click', () => {
-    // Go back to the word selection screen
     showScreen('wordSelectionScreen');
-    currentBaseWordData = null; // Clear current word data
-    totalScore = 0; // Reset total score when changing base word
-    updateScoreDisplay();
-    renderBaseWordSelection(); // Re-render in case you add more words dynamically
+    renderBaseWordSelection();
 });
 
-// --- Start the game ---
-initGame();
+// Initialize the game
+document.addEventListener('DOMContentLoaded', initGame);
