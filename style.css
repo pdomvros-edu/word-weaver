@@ -42,7 +42,7 @@ body {
 
 .teacher-image {
     width: 90px;
-    height: 100px; /* <--- MAKE SURE THIS IS 80px (or higher if you prefer) */
+    height: 150px; /* <--- MAKE SURE THIS IS 80px (or higher if you prefer) */
     border-radius: 50%;
     object-fit: cover;
     border: 2px solid #5cb85c;
