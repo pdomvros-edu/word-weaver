@@ -644,7 +644,7 @@ const gameData = {
             level: "B1",
             derivatives: [
                 { word: "solution", level: "B1", definition: "A means of solving a problem or dealing with a difficult situation." },
-                { word: "solver", level: "C1", definition: "A person or thing that solves a problem." },
+                { word: "solver", level: "C1", definition: "A person who solves a problem." },
                 { word: "solvable", level: "C1", definition: "Able to be solved." },
                 { word: "unsolved", level: "B2", definition: "Not solved." },
                 { word: "insoluble", level: "C2", definition: "Impossible to solve." }
