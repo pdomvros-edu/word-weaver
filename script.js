@@ -685,6 +685,7 @@ const gameData = {
         "-ship", "-sion", "-some", "-speak", "-sphere", "-tude", "-tion", "-ward", "-wise", "-worthy", "-y"
     ]
 };
+
 // DOM Elements
 const elements = {
     wordSelectionScreen: document.getElementById('wordSelectionScreen'),
@@ -702,7 +703,7 @@ const elements = {
     foundWordsList: document.getElementById('foundWordsList')
 };
 
-// Game State (This section is good)
+// Game State
 let currentBaseWordData = null;
 let foundWordsForCurrentBase = new Set();
 let totalScore = 0;
@@ -710,7 +711,7 @@ let selectedPrefix = null;
 let selectedSuffix = null;
 let constructedWord = '';
 
-// Helper Functions (This section is good)
+// Helper Functions
 function cleanAffix(affix) {
     return affix.replace(/^-|-$/g, '');
 }
@@ -724,7 +725,7 @@ function showScreen(screenId) {
 
 function clearFeedback() {
     elements.feedbackMessage.textContent = '';
-    elements.feedbackMessage.className = 'feedback';
+    elements.feedbackMessage.className = 'feedback'; // Reset class
 }
 
 function updateScoreDisplay() {
@@ -736,130 +737,241 @@ function updateScoreDisplay() {
 // Game Functions
 
 function initGame() {
-    console.log("1. initGame() called."); // ADD THIS LOG
+    console.log("1. initGame() called.");
     // Verify DOM elements exist
     if (!elements.prefixList || !elements.suffixList || !elements.baseWordSelectionGrid || !elements.baseWordDisplay) {
         console.error('Critical Error: One or more required DOM elements not found!');
         return; // Stop initialization if critical elements are missing
     }
-    console.log("2. All required DOM elements found."); // ADD THIS LOG
+    console.log("2. All required DOM elements found.");
 
     gameData.base_words.sort((a, b) => a.word.localeCompare(b.word));
-    console.log("3. Base words sorted."); // ADD THIS LOG
+    console.log("3. Base words sorted.");
 
     renderBaseWordSelection();
-    console.log("4. renderBaseWordSelection() called."); // ADD THIS LOG
+    console.log("4. renderBaseWordSelection() called.");
     showScreen('wordSelectionScreen');
-    console.log("5. Switched to wordSelectionScreen."); // ADD THIS LOG
+    console.log("5. Switched to wordSelectionScreen.");
     updateScoreDisplay();
-    console.log("6. Score display updated."); // ADD THIS LOG
+    console.log("6. Score display updated.");
 }
 
 function renderBaseWordSelection() {
-    console.log("7. renderBaseWordSelection() started."); // ADD THIS LOG
+    console.log("7. renderBaseWordSelection() started.");
     elements.baseWordSelectionGrid.innerHTML = '';
     
     gameData.base_words.forEach(wordData => {
         const button = document.createElement('button');
-        button.className = 'word-select-btn';
+        button.className = 'word-select-btn'; // Use .className for multiple classes
         button.textContent = wordData.word;
         button.addEventListener('click', () => selectBaseWord(wordData));
         elements.baseWordSelectionGrid.appendChild(button);
     });
-    console.log("8. Base word selection buttons rendered. Count:", gameData.base_words.length); // ADD THIS LOG
+    console.log("8. Base word selection buttons rendered. Count:", gameData.base_words.length);
 }
 
 function selectBaseWord(wordData) {
-    console.log("9. selectBaseWord() called with:", wordData.word); // ADD THIS LOG
+    console.log("9. selectBaseWord() called with:", wordData.word);
     if (!wordData?.word || !Array.isArray(wordData.derivatives)) {
         console.error('Invalid word data:', wordData);
         return;
     }
-    console.log("10. Word data valid."); // ADD THIS LOG
+    console.log("10. Word data valid.");
 
     currentBaseWordData = wordData;
     foundWordsForCurrentBase.clear();
-    elements.foundWordsList.innerHTML = '';
-    clearFeedback();
-    resetWordConstruction();
+    elements.foundWordsList.innerHTML = ''; // Clear found words list
+    clearFeedback(); // Clear feedback message
+    resetWordConstruction(); // Reset word construction area
     
-    renderAffixes();
-    console.log("11. renderAffixes() called from selectBaseWord()."); // ADD THIS LOG
+    renderAffixes(); // Render the affixes for the new base word
+    console.log("11. renderAffixes() called from selectBaseWord().");
     
     elements.baseWordDisplay.textContent = currentBaseWordData.word;
     showScreen('gameScreen');
     updateScoreDisplay();
-    console.log("12. Game screen displayed for:", currentBaseWordData.word); // ADD THIS LOG
+    console.log("12. Game screen displayed for:", currentBaseWordData.word);
 }
 
 function renderAffixes() {
-    console.log("13. renderAffixes() started."); // ADD THIS LOG
+    console.log("13. renderAffixes() started.");
     elements.prefixList.innerHTML = '';
     elements.suffixList.innerHTML = '';
-    console.log("14. Affix lists cleared in HTML."); // ADD THIS LOG
+    console.log("14. Affix lists cleared in HTML.");
 
-    console.log("15. Attempting to add prefixes."); // ADD THIS LOG
-    gameData.common_prefixes.forEach(prefix => {
-        const span = document.createElement('span');
-        span.classList.add('affix-item', 'prefix-item');
-        span.textContent = prefix;
-        span.addEventListener('click', () => toggleAffixSelection(prefix, 'prefix', span));
-        elements.prefixList.appendChild(span);
-        // console.log("Added prefix:", prefix); // Uncomment for very verbose logging
-    });
-    console.log("16. Prefixes loop finished."); // ADD THIS LOG
+    // Check if gameData.common_prefixes exists and has items
+    if (gameData.common_prefixes && gameData.common_prefixes.length > 0) {
+        console.log("15. Attempting to add prefixes. Count:", gameData.common_prefixes.length);
+        gameData.common_prefixes.forEach(prefix => {
+            const span = document.createElement('span');
+            span.classList.add('affix-item', 'prefix-item');
+            span.textContent = prefix;
+            span.addEventListener('click', () => toggleAffixSelection(prefix, 'prefix', span));
+            elements.prefixList.appendChild(span);
+            // console.log("Added prefix:", prefix); // Uncomment for very detailed logging
+        });
+        console.log("16. Prefixes loop finished.");
+    } else {
+        console.warn("gameData.common_prefixes is empty or undefined!");
+    }
 
-    console.log("17. Attempting to add suffixes."); // ADD THIS LOG
-    gameData.common_suffixes.forEach(suffix => {
-        const span = document.createElement('span');
-        span.classList.add('affix-item', 'suffix-item');
-        span.textContent = suffix;
-        span.addEventListener('click', () => toggleAffixSelection(suffix, 'suffix', span));
-        elements.suffixList.appendChild(span);
-        // console.log("Added suffix:", suffix); // Uncomment for very verbose logging
-    });
-    console.log("18. Suffixes loop finished."); // ADD THIS LOG
+
+    // Check if gameData.common_suffixes exists and has items
+    if (gameData.common_suffixes && gameData.common_suffixes.length > 0) {
+        console.log("17. Attempting to add suffixes. Count:", gameData.common_suffixes.length);
+        gameData.common_suffixes.forEach(suffix => {
+            const span = document.createElement('span');
+            span.classList.add('affix-item', 'suffix-item');
+            span.textContent = suffix;
+            span.addEventListener('click', () => toggleAffixSelection(suffix, 'suffix', span));
+            elements.suffixList.appendChild(span);
+            // console.log("Added suffix:", suffix); // Uncomment for very detailed logging
+        });
+        console.log("18. Suffixes loop finished.");
+    } else {
+        console.warn("gameData.common_suffixes is empty or undefined!");
+    }
+    console.log("Exiting renderAffixes() function.");
 }
 
 function toggleAffixSelection(affix, type, element) {
-    console.log("19. toggleAffixSelection() called for:", affix, type); // ADD THIS LOG
-    // ... rest of the function (no changes needed for this test) ...
+    console.log("19. toggleAffixSelection() called for:", affix, type);
+    if (type === 'prefix') {
+        if (selectedPrefix === affix) {
+            selectedPrefix = null;
+        } else {
+            selectedPrefix = affix;
+            // Only allow one prefix selection: deselect others
+            document.querySelectorAll('.prefix-item.selected').forEach(el => {
+                if (el !== element) { // Don't deselect the one just clicked if it's new
+                    el.classList.remove('selected');
+                }
+            });
+        }
+        element.classList.toggle('selected', selectedPrefix === affix);
+    } else { // type === 'suffix'
+        if (selectedSuffix === affix) {
+            selectedSuffix = null;
+        } else {
+            selectedSuffix = affix;
+            // Only allow one suffix selection: deselect others
+            document.querySelectorAll('.suffix-item.selected').forEach(el => {
+                if (el !== element) { // Don't deselect the one just clicked if it's new
+                    el.classList.remove('selected');
+                }
+            });
+        }
+        element.classList.toggle('selected', selectedSuffix === affix);
+    }
+    updateWordConstructionArea();
 }
 
 function updateWordConstructionArea() {
-    console.log("20. updateWordConstructionArea() called."); // ADD THIS LOG
-    // ... rest of the function ...
+    console.log("20. updateWordConstructionArea() called.");
+    elements.wordConstructionArea.innerHTML = '';
+    constructedWord = '';
+
+    const parts = [];
+    if (selectedPrefix) {
+        const prefixValue = cleanAffix(selectedPrefix);
+        parts.push({ type: 'prefix', value: prefixValue });
+        constructedWord += prefixValue;
+    }
+
+    // Always include the base word
+    parts.push({ type: 'base', value: currentBaseWordData.word });
+    constructedWord += currentBaseWordData.word.toLowerCase();
+
+    if (selectedSuffix) {
+        const suffixValue = cleanAffix(selectedSuffix);
+        parts.push({ type: 'suffix', value: suffixValue });
+        constructedWord += suffixValue;
+    }
+
+    parts.forEach(part => {
+        const span = document.createElement('span');
+        span.classList.add('construction-part', part.type);
+        span.textContent = part.value;
+        elements.wordConstructionArea.appendChild(span);
+    });
 }
 
 function resetWordConstruction() {
-    console.log("21. resetWordConstruction() called."); // ADD THIS LOG
-    // ... rest of the function ...
+    console.log("21. resetWordConstruction() called.");
+    selectedPrefix = null;
+    selectedSuffix = null;
+    constructedWord = '';
+    
+    document.querySelectorAll('.affix-item.selected').forEach(el => {
+        el.classList.remove('selected');
+    });
+    
+    elements.wordConstructionArea.innerHTML = `
+        <span class="construction-part base">${currentBaseWordData?.word || ''}</span>
+    `;
+    clearFeedback();
 }
 
 function buildAndCheckWord() {
-    console.log("22. buildAndCheckWord() called."); // ADD THIS LOG
-    // ... rest of the function ...
+    console.log("22. buildAndCheckWord() called.");
+    if (!selectedPrefix && !selectedSuffix) {
+        showFeedback("Please select at least one affix to build a new word!", 'incorrect');
+        return;
+    }
+
+    if (constructedWord === currentBaseWordData.word.toLowerCase()) {
+        showFeedback("That's the base word! Try combining affixes.", 'incorrect');
+        return;
+    }
+
+    if (foundWordsForCurrentBase.has(constructedWord)) {
+        showFeedback("You've already found that word!", 'incorrect');
+        resetWordConstruction();
+        return;
+    }
+
+    const foundDerivative = currentBaseWordData.derivatives.find(d => 
+        d.word.toLowerCase() === constructedWord.toLowerCase()
+    );
+
+    if (foundDerivative) {
+        showFeedback(`Correct! "${constructedWord}" is a valid word!`, 'correct');
+        totalScore += 10;
+        foundWordsForCurrentBase.add(constructedWord.toLowerCase());
+        addWordToFoundList(foundDerivative);
+        updateScoreDisplay();
+        resetWordConstruction();
+    } else {
+        showFeedback(`"${constructedWord}" is not a valid derivative of "${currentBaseWordData.word}".`, 'incorrect');
+    }
 }
 
 function addWordToFoundList(derivative) {
-    console.log("23. addWordToFoundList() called for:", derivative.word); // ADD THIS LOG
-    // ... rest of the function ...
+    console.log("23. addWordToFoundList() called for:", derivative.word);
+    const li = document.createElement('li');
+    li.innerHTML = `
+        <span class="word">${derivative.word}</span>
+        <span class="level ${derivative.level}">${derivative.level}</span>
+        <span class="definition">${derivative.definition}</span>
+    `;
+    elements.foundWordsList.prepend(li); // Use elements.foundWordsList
 }
 
 function showFeedback(message, type) {
-    console.log("24. showFeedback() called:", message, type); // ADD THIS LOG
-    // ... rest of the function ...
+    console.log("24. showFeedback() called:", message, type);
+    elements.feedbackMessage.textContent = message;
+    elements.feedbackMessage.className = `feedback ${type}`;
 }
 
-// Event Listeners (This section is good)
+// Event Listeners
 elements.buildWordBtn.addEventListener('click', buildAndCheckWord);
 elements.resetWordBtn.addEventListener('click', resetWordConstruction);
 elements.nextWordBtn.addEventListener('click', () => {
-    console.log("25. Next Base Word button clicked."); // ADD THIS LOG
+    console.log("25. Next Base Word button clicked.");
     showScreen('wordSelectionScreen');
     renderBaseWordSelection();
 });
 
 // Initialize the game when the DOM is fully loaded
 document.addEventListener('DOMContentLoaded', initGame);
-console.log("26. DOMContentLoaded event listener registered."); // ADD THIS LOG
+console.log("26. DOMContentLoaded event listener registered. Script parsed.");
