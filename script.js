@@ -682,26 +682,26 @@ const gameData = {
         "-ian", "-ible", "-ic", "-ify", "-ing", "-ion", "-ish", "-ism", "-ist", "-ite",
         "-ition", "-ity", "-ive", "-ize", "-less", "-like", "-logy", "-ly", "-meter", "-monger",
         "-ness", "-nomy", "-oid", "-or", "-ous", "-pathy", "-phone", "-phobia", "-proof", "-scope",
-        "-ship", "-sion", "-some", "-speak", "-sphere", "-tude", "-tion", "-ward", "-wise", "-worthy", "-y",
-        "-ization" // Note: More specific than "-tion"; keep based on preference
+        "-ship", "-sion", "-some", "-speak", "-sphere", "-tude", "-tion", "-ward", "-wise", "-worthy", "-y"
     ]
 };
 
-
 // DOM Elements
-const wordSelectionScreen = document.getElementById('wordSelectionScreen');
-const baseWordSelectionGrid = document.getElementById('baseWordSelectionGrid');
-const gameScreen = document.getElementById('gameScreen');
-const baseWordDisplay = document.getElementById('baseWordDisplay');
-const prefixList = document.getElementById('prefixList');
-const suffixList = document.getElementById('suffixList');
-const wordConstructionArea = document.getElementById('wordConstructionArea');
-const buildWordBtn = document.getElementById('buildWordBtn');
-const resetWordBtn = document.getElementById('resetWordBtn');
-const nextWordBtn = document.getElementById('nextWordBtn');
-const feedbackMessage = document.getElementById('feedbackMessage');
-const scoreDisplay = document.getElementById('scoreDisplay');
-const foundWordsList = document.getElementById('foundWordsList');
+const elements = {
+    wordSelectionScreen: document.getElementById('wordSelectionScreen'),
+    baseWordSelectionGrid: document.getElementById('baseWordSelectionGrid'),
+    gameScreen: document.getElementById('gameScreen'),
+    baseWordDisplay: document.getElementById('baseWordDisplay'),
+    prefixList: document.getElementById('prefixList'),
+    suffixList: document.getElementById('suffixList'),
+    wordConstructionArea: document.getElementById('wordConstructionArea'),
+    buildWordBtn: document.getElementById('buildWordBtn'),
+    resetWordBtn: document.getElementById('resetWordBtn'),
+    nextWordBtn: document.getElementById('nextWordBtn'),
+    feedbackMessage: document.getElementById('feedbackMessage'),
+    scoreDisplay: document.getElementById('scoreDisplay'),
+    foundWordsList: document.getElementById('foundWordsList')
+};
 
 // Game State
 let currentBaseWordData = null;
@@ -711,6 +711,135 @@ let selectedPrefix = null;
 let selectedSuffix = null;
 let constructedWord = '';
 
+// Initialize the game
+function initGame() {
+    // Verify DOM elements exist
+    if (!elements.prefixList || !elements.suffixList) {
+        console.error('Critical Error: Could not find prefix or suffix list elements');
+        return;
+    }
+
+    // Sort base words alphabetically
+    gameData.base_words.sort((a, b) => a.word.localeCompare(b.word));
+    
+    renderBaseWordSelection();
+    showScreen('wordSelectionScreen');
+    updateScoreDisplay();
+}
+
+// Render base word selection buttons
+function renderBaseWordSelection() {
+    elements.baseWordSelectionGrid.innerHTML = '';
+    
+    gameData.base_words.forEach(wordData => {
+        const button = document.createElement('button');
+        button.className = 'word-select-btn';
+        button.textContent = wordData.word;
+        button.addEventListener('click', () => selectBaseWord(wordData));
+        elements.baseWordSelectionGrid.appendChild(button);
+    });
+}
+
+// Select a base word to play with
+function selectBaseWord(wordData) {
+    if (!wordData || !wordData.word) {
+        console.error('Invalid word data');
+        return;
+    }
+
+    currentBaseWordData = wordData;
+    foundWordsForCurrentBase.clear();
+    elements.foundWordsList.innerHTML = '';
+    clearFeedback();
+    resetWordConstruction();
+    
+    // Render affixes
+    renderAffixes();
+    
+    elements.baseWordDisplay.textContent = currentBaseWordData.word;
+    showScreen('gameScreen');
+    updateScoreDisplay();
+}
+
+// Render all prefixes and suffixes
+function renderAffixes() {
+    // Clear existing
+    elements.prefixList.innerHTML = '';
+    elements.suffixList.innerHTML = '';
+
+    // Add prefixes
+    gameData.common_prefixes.forEach(prefix => {
+        const span = document.createElement('span');
+        span.className = 'affix-item prefix-item';
+        span.textContent = prefix;
+        span.addEventListener('click', () => selectAffix(prefix, 'prefix'));
+        elements.prefixList.appendChild(span);
+    });
+
+    // Add suffixes
+    gameData.common_suffixes.forEach(suffix => {
+        const span = document.createElement('span');
+        span.className = 'affix-item suffix-item';
+        span.textContent = suffix;
+        span.addEventListener('click', () => selectAffix(suffix, 'suffix'));
+        elements.suffixList.appendChild(span);
+    });
+}
+
+// Select a prefix or suffix
+function selectAffix(affix, type) {
+    // Clear previous selection of this type
+    const items = document.querySelectorAll(`.${type}-item`);
+    items.forEach(item => item.classList.remove('selected'));
+
+    // Set new selection
+    if (type === 'prefix') {
+        selectedPrefix = affix;
+    } else {
+        selectedSuffix = affix;
+    }
+
+    // Highlight selected item
+    const selectedItem = [...items].find(item => item.textContent === affix);
+    if (selectedItem) {
+        selectedItem.classList.add('selected');
+    }
+
+    updateWordConstructionArea();
+}
+
+// Update the word construction display
+function updateWordConstructionArea() {
+    elements.wordConstructionArea.innerHTML = '';
+    constructedWord = '';
+
+    // Add prefix if selected
+    if (selectedPrefix) {
+        const prefixValue = selectedPrefix.replace(/-$/, ''); // Remove trailing hyphen
+        const span = document.createElement('span');
+        span.className = 'construction-part prefix';
+        span.textContent = prefixValue;
+        elements.wordConstructionArea.appendChild(span);
+        constructedWord += prefixValue.toLowerCase();
+    }
+
+    // Add base word
+    const baseSpan = document.createElement('span');
+    baseSpan.className = 'construction-part base';
+    baseSpan.textContent = currentBaseWordData.word;
+    elements.wordConstructionArea.appendChild(baseSpan);
+    constructedWord += currentBaseWordData.word.toLowerCase();
+
+    // Add suffix if selected
+    if (selectedSuffix) {
+        const suffixValue = selectedSuffix.replace(/^-/, ''); // Remove leading hyphen
+        const span = document.createElement('span');
+        span.className = 'construction-part suffix';
+        span.textContent = suffixValue;
+        elements.wordConstructionArea.appendChild(span);
+        constructedWord += suffixValue.toLowerCase();
+    }
+}
 // Helper Functions
 function cleanAffix(affix) {
     return affix.replace(/^-|-$/g, '');
