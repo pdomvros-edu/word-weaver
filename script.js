@@ -1,3 +1,4 @@
+alert("Hello from JavaScript!");
 // script.js
 
 const gameData = {
