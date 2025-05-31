@@ -753,7 +753,6 @@ function selectBaseWord(wordData) {
     showScreen('gameScreen');
     feedbackMessage.textContent = ''; // Clear previous feedback
 }
-
 function renderAffixes() {
     prefixList.innerHTML = '';
     gameData.common_prefixes.forEach(prefix => {
