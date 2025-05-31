@@ -517,7 +517,6 @@ const gameData = {
             { word: "uncommunicative", level: "C1", definition: "Unwilling to talk or impart information." }
         ]
     }
-]
     ],
     common_prefixes: [
         "un-", "dis-", "re-", "pre-", "mis-", "co-", "in-", "im-", "il-", "ir-",
