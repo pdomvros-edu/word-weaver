@@ -289,7 +289,7 @@ const gameData = {
             { word: "alive", level: "A1", definition: "Living, not dead." },
             { word: "lively", level: "A2", definition: "Full of life and energy." }
         ]
-    }
+    },
         {
             word: "govern",
             level: "B2",
