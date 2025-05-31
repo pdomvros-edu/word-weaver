@@ -17,46 +17,68 @@
         <img src="teacher.png" alt="Teacher Avatar" class="teacher-image">
     </div>
 
+    <!-- ===========================
+         Base‐Word Selection Screen
+         =========================== -->
     <div id="wordSelectionScreen" class="screen">
         <h2>Choose Your Base Word</h2>
-        <p style="text-align: center; margin-bottom: 25px;">Click on a word to start building!</p>
+        <p style="text-align: center; margin-bottom: 25px;">
+            Click on a word to start building!
+        </p>
         <div class="word-selection-grid" id="baseWordSelectionGrid">
-            </div>
+            <!-- Buttons for each base word will be injected here by script.js -->
+        </div>
     </div>
 
+    <!-- ===========================
+         Game Screen (Hidden by Default)
+         =========================== -->
     <div id="gameScreen" class="screen hidden">
-        <div class="main-game-area">
-            <p style="text-align: center; margin-bottom: 25px;">Build words by clicking affixes and the base word!</p>
+        <div class="main‐game‐area">
+            <p style="text-align: center; margin-bottom: 25px;">
+                Build words by clicking affixes and the base word!
+            </p>
 
-            <div class="base-word-display" id="baseWordDisplay"></div>
+            <!-- Base word (e.g. “CREATE”) appears here -->
+            <div class="base‐word‐display" id="baseWordDisplay"></div>
 
+            <!-- Where prefix + base + suffix show up -->
             <div class="section-header">Word Construction Area</div>
-            <div class="word-construction-area" id="wordConstructionArea">
-                </div>
+            <div class="word‐construction‐area" id="wordConstructionArea">
+                <!-- JavaScript will insert a <span class="construction-part base">…</span> here -->
+            </div>
 
-            <div class="game-buttons">
+            <!-- Buttons for “Build Word”, “Reset Word”, “Next Base Word” -->
+            <div class="game‐buttons">
                 <button id="buildWordBtn">Build Word</button>
                 <button id="resetWordBtn">Reset Word</button>
                 <button id="nextWordBtn">Next Base Word</button>
             </div>
 
+            <!-- Feedback & Score -->
             <div class="feedback" id="feedbackMessage"></div>
-            <div class="score-display" id="scoreDisplay">Score: 0 | Words Found: 0 / 0</div>
+            <div class="score‐display" id="scoreDisplay">
+                Score: 0 | Words Found: 0 / 0
+            </div>
 
+            <!-- ===== Prefix List ===== -->
             <div class="section-header">Prefixes</div>
-            <div class="affix-list" id="prefixList"></div>
+            <div class="affix‐list" id="prefixList"></div> <!-- ← ID must exactly match script.js :contentReference[oaicite:0]{index=0} -->
 
+            <!-- ===== Suffix List ===== -->
             <div class="section-header">Suffixes</div>
-            <div class="affix-list" id="suffixList"></div>
+            <div class="affix‐list" id="suffixList"></div> <!-- ← ID must exactly match script.js :contentReference[oaicite:1]{index=1} -->
         </div>
 
         <div class="sidebar">
             <h2>Your Found Words</h2>
-            <ul class="found-words-list" id="foundWordsList">
-                </ul>
+            <ul class="found‐words‐list" id="foundWordsList">
+                <!-- JavaScript will prepend <li> items here -->
+            </ul>
         </div>
     </div>
 
+    <!-- Link to the corrected script.js -->
     <script src="script.js"></script>
 </body>
 </html>
