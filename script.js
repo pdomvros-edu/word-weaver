@@ -302,6 +302,222 @@ const gameData = {
                 { word: "industrious", level: "C1", definition: "Diligent and hard-working." }
             ]
         }
+        {
+        word: "establish",
+        level: "B2",
+        derivatives: [
+            { word: "establishment", level: "B2", definition: "The act of establishing something or being established." },
+            { word: "established", level: "B2", definition: "Having been in existence for a long time and therefore recognized and respected." },
+            { word: "re-establish", level: "C1", definition: "To establish again." },
+            { word: "disestablish", level: "C2", definition: "To deprive (a national church) of its status as an established church." },
+            { word: "disestablishment", level: "C2", definition: "The action of depriving a national church of its status as an established church." }
+        ]
+    },
+    {
+        word: "achieve",
+        level: "B1",
+        derivatives: [
+            { word: "achievement", level: "B1", definition: "A thing done successfully, typically by effort, courage, or skill." },
+            { word: "achievable", level: "B2", definition: "Capable of being done or accomplished successfully." },
+            { word: "achiever", level: "C1", definition: "A person who achieves a lot." },
+            { word: "unachievable", level: "C1", definition: "Impossible to achieve." }
+        ]
+    },
+    {
+        word: "respond",
+        level: "B1",
+        derivatives: [
+            { word: "response", level: "B1", definition: "A verbal or written answer." },
+            { word: "responsive", level: "B2", definition: "Reacting quickly and positively." },
+            { word: "responsiveness", level: "C1", definition: "The quality of reacting quickly and positively." },
+            { word: "respondent", level: "C1", definition: "A person who replies to something, especially one who answers questions in a survey or questionnaire." },
+            { word: "irresponsible", level: "B2", definition: "Not showing a proper sense of responsibility." },
+            { word: "irresponsibility", level: "C1", definition: "Lack of a proper sense of responsibility." },
+            { word: "correspond", level: "B2", definition: "To communicate by exchanging letters or emails." },
+            { word: "correspondence", level: "B2", definition: "Communication by exchange of letters or emails." },
+            { word: "correspondent", level: "B2", definition: "A person who writes letters to a person or a newspaper." }
+        ]
+    },
+    {
+        word: "create",
+        level: "B1",
+        derivatives: [
+            { word: "creation", level: "B1", definition: "The action or process of bringing something into existence." },
+            { word: "creative", level: "B1", definition: "Relating to or involving the use of the imagination or original ideas to create something." },
+            { word: "creatively", level: "B2", definition: "In a creative way." },
+            { word: "creativity", level: "B2", definition: "The use of imagination or original ideas to create something; inventiveness." },
+            { word: "creator", level: "B2", definition: "A person or thing that brings something into existence." },
+            { word: "recreate", level: "C1", definition: "To create again or anew." },
+            { word: "recreation", level: "B2", definition: "Activity done for enjoyment when one is not working." },
+            { word: "recreational", level: "B2", definition: "Relating to or denoting recreation." }
+        ]
+    },
+    {
+        word: "analyse",
+        level: "B2",
+        derivatives: [
+            { word: "analysis", level: "B2", definition: "Detailed examination of the elements or structure of something." },
+            { word: "analyst", level: "B2", definition: "A person who conducts analysis." },
+            { word: "analytical", level: "C1", definition: "Relating to or using analysis or logical reasoning." },
+            { word: "analytically", level: "C1", definition: "In an analytical manner." },
+            { word: "reanalyse", level: "C2", definition: "To analyze again." }
+        ]
+    },
+    {
+        word: "identify",
+        level: "B1",
+        derivatives: [
+            { word: "identification", level: "B2", definition: "The action or process of identifying someone or something." },
+            { word: "identity", level: "B2", definition: "The fact of being who or what a person or thing is." },
+            { word: "identifiable", level: "C1", definition: "Able to be recognized as being a particular person or thing." },
+            { word: "unidentifiable", level: "C2", definition: "Impossible to identify." },
+            { word: "identifier", level: "C2", definition: "A name or symbol that identifies something." }
+        ]
+    },
+    {
+        word: "explain",
+        level: "A2",
+        derivatives: [
+            { word: "explanation", level: "B1", definition: "A statement or account that makes something clear." },
+            { word: "explanatory", level: "B2", definition: "Serving to explain something." },
+            { word: "unexplained", level: "C1", definition: "Not accounted for or understood." },
+            { word: "explainable", level: "C1", definition: "Able to be explained." },
+            { word: "inexplicable", level: "C2", definition: "Unable to be explained or accounted for." }
+        ]
+    },
+    {
+        word: "educate",
+        level: "B1",
+        derivatives: [
+            { word: "education", level: "B1", definition: "The process of receiving or giving systematic instruction, especially at a school or university." },
+            { word: "educational", level: "B1", definition: "Relating to education." },
+            { word: "educationally", level: "B2", definition: "In an educational way." },
+            { word: "educated", level: "B2", definition: "Having had a good education." },
+            { word: "educator", level: "C1", definition: "A person who provides instruction or education." },
+            { word: "uneducated", level: "B2", definition: "Lacking a good education." }
+        ]
+    },
+    {
+        word: "manage",
+        level: "B1",
+        derivatives: [
+            { word: "management", level: "B1", definition: "The process of dealing with or controlling things or people." },
+            { word: "manager", level: "B1", definition: "A person responsible for controlling or administering all or part of a company or organization." },
+            { word: "manageable", level: "B2", definition: "Able to be managed or controlled." },
+            { word: "unmanageable", level: "C1", definition: "Difficult or impossible to manage or control." },
+            { word: "mismanage", level: "C1", definition: "To manage badly or incompetently." },
+            { word: "mismanagement", level: "C2", definition: "The process or practice of managing something badly." }
+        ]
+    },
+    {
+        word: "require",
+        level: "B1",
+        derivatives: [
+            { word: "requirement", level: "B1", definition: "A thing that is needed or wanted." },
+            { word: "requisition", level: "C1", definition: "An official order laying claim to the use of property or materials." },
+            { word: "required", level: "B1", definition: "Officially compulsory, or otherwise necessary." },
+            { word: "prerequisite", level: "C1", definition: "A thing that is required as a prior condition for something else to happen or exist." }
+        ]
+    },
+    {
+        word: "organize",
+        level: "B1",
+        derivatives: [
+            { word: "organization", level: "B1", definition: "An organized body of people with a particular purpose." },
+            { word: "organizer", level: "B2", definition: "A person who arranges or plans an event or activity." },
+            { word: "organized", level: "B1", definition: "Arranged or structured in a systematic way." },
+            { word: "disorganized", level: "B2", definition: "Lacking order or planning." },
+            { word: "reorganize", level: "C1", definition: "To organize again in a different way." },
+            { word: "reorganization", level: "C1", definition: "The action or process of organizing something again in a different way." }
+        ]
+    },
+    {
+        word: "participate",
+        level: "B2",
+        derivatives: [
+            { word: "participation", level: "B2", definition: "The action of taking part in something." },
+            { word: "participant", level: "B2", definition: "A person who takes part in something." },
+            { word: "participatory", level: "C1", definition: "Relating to or involving participation." }
+        ]
+    },
+    {
+        word: "produce",
+        level: "A2",
+        derivatives: [
+            { word: "product", level: "A2", definition: "An article or substance that is manufactured or refined for sale." },
+            { word: "production", level: "B1", definition: "The action of making or manufacturing from components or raw materials, or the process of being so manufactured." },
+            { word: "producer", level: "B1", definition: "A person or company that makes or creates something." },
+            { word: "productive", level: "B2", definition: "Achieving or producing a significant amount or result." },
+            { word: "productively", level: "C1", definition: "In a productive manner." },
+            { word: "productivity", level: "C1", definition: "The state or quality of being productive." },
+            { word: "unproductive", level: "C1", definition: "Not producing or achieving much." },
+            { word: "reproduce", level: "B2", definition: "To produce again." },
+            { word: "reproduction", level: "B2", definition: "The action or process of copying something." }
+        ]
+    },
+    {
+        word: "assess",
+        level: "B2",
+        derivatives: [
+            { word: "assessment", level: "B2", definition: "The evaluation or estimation of the nature, quality, or ability of someone or something." },
+            { word: "assessor", level: "C1", definition: "A person who evaluates the quality or nature of something." },
+            { word: "reassess", level: "C1", definition: "To assess again." },
+            { word: "reassessment", level: "C2", definition: "The action of assessing something again." }
+        ]
+    },
+    {
+        word: "perform",
+        level: "B1",
+        derivatives: [
+            { word: "performance", level: "B1", definition: "The action or process of performing a task or function." },
+            { word: "performer", level: "B2", definition: "A person who entertains an audience." },
+            { word: "performing", level: "B1", definition: "Engaging in or presenting a performance." },
+            { word: "underperform", level: "C1", definition: "To perform less well than expected." },
+            { word: "underperformance", level: "C2", definition: "The act or instance of performing less well than expected." }
+        ]
+    },
+    {
+        word: "solve",
+        level: "B1",
+        derivatives: [
+            { word: "solution", level: "B1", definition: "A means of solving a problem or dealing with a difficult situation." },
+            { word: "solver", level: "C1", definition: "A person or thing that solves a problem." },
+            { word: "solvable", level: "C1", definition: "Able to be solved." },
+            { word: "unsolved", level: "B2", definition: "Not solved." },
+            { word: "insoluble", level: "C2", definition: "Impossible to solve." }
+        ]
+    },
+    {
+        word: "contribute",
+        level: "B2",
+        derivatives: [
+            { word: "contribution", level: "B2", definition: "The part played by a person or thing in bringing about a result or helping something to advance." },
+            { word: "contributor", level: "C1", definition: "A person who contributes something." },
+            { word: "contributory", level: "C1", definition: "Playing a part in bringing about a result." }
+        ]
+    },
+    {
+        word: "investigate",
+        level: "B2",
+        derivatives: [
+            { word: "investigation", level: "B2", definition: "The action of investigating something or someone; formal inquiry." },
+            { word: "investigator", level: "C1", definition: "A person who carries out a formal inquiry or investigation." },
+            { word: "investigative", level: "C1", definition: "Of or relating to investigation, especially legal or criminal investigation." },
+            { word: "uninvestigated", level: "C2", definition: "Not investigated." }
+        ]
+    },
+    {
+        word: "communicate",
+        level: "B1",
+        derivatives: [
+            { word: "communication", level: "B1", definition: "The imparting or exchanging of information by speaking, writing, or using some other medium." },
+            { word: "communicative", level: "B2", definition: "Willing to talk or impart information." },
+            { word: "communicatively", level: "C1", definition: "In a communicative manner." },
+            { word: "communicator", level: "C1", definition: "A person who is able to convey information or ideas effectively." },
+            { word: "uncommunicative", level: "C1", definition: "Unwilling to talk or impart information." }
+        ]
+    }
+]
     ],
     common_prefixes: [
         "un-", "dis-", "re-", "pre-", "mis-", "co-", "in-", "im-", "il-", "ir-",
