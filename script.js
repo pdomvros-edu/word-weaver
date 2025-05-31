@@ -671,21 +671,19 @@ const gameData = {
         }
     ],
     common_prefixes: [
-        "un-", "dis-", "re-", "pre-", "mis-", "co-", "in-", "im-", "il-", "ir-",
-        "de-", "ex-", "sub-", "inter-", "over-", "under-", "anti-", "auto-", "bi-",
-        "non-", "post-", "pro-", "trans-", "semi-", "mal-", "hyper-", "mono-",
-        "multi-", "poly-", "mega-", "micro-", "macro-", "mini-", "neo-", "out-",
-        "super-", "tele-"
+        "anti-", "auto-", "bi-", "co-", "de-", "dis-", "ex-", "hyper-", "il-", "im-",
+        "in-", "inter-", "ir-", "macro-", "mal-", "mega-", "micro-", "mini-", "mis-",
+        "mono-", "multi-", "neo-", "non-", "out-", "over-", "poly-", "post-", "pre-",
+        "pro-", "re-", "semi-", "sub-", "super-", "tele-", "trans-", "un-", "under-"
     ],
     common_suffixes: [
-        "-ment", "-tion", "-sion", "-able", "-ible", "-ly", "-ness", "-ful", "-less",
-        "-er", "-or", "-ist", "-ism", "-ity", "-ive", "-al", "-ic", "-ize", "-ify",
-        "-en", "-dom", "-ship", "-ence", "-ancy", "-ant", "-ent", "-ous", "-ette",
-        "-ian", "-ing", "-ation", "-ition", "-ization", "-hood", "-esque",
-        "-fold", "-free", "-graph", "-ish", "-ite",
-        "-like", "-logy", "-meter", "-monger", "-nomy", "-oid", "-pathy",
-        "-phone", "-phobia", "-proof", "-scope", "-some", "-speak", "-sphere", "-tude", "-ward",
-        "-wise", "-worthy", "-y"
+        "-able", "-acy", "-al", "-ance", "-ancy", "-ant", "-ation", "-ator", "-dom", "-en",
+        "-ence", "-ent", "-er", "-esque", "-ette", "-fold", "-free", "-ful", "-graph", "-hood",
+        "-ian", "-ible", "-ic", "-ify", "-ing", "-ion", "-ish", "-ism", "-ist", "-ite",
+        "-ition", "-ity", "-ive", "-ize", "-less", "-like", "-logy", "-ly", "-meter", "-monger",
+        "-ness", "-nomy", "-oid", "-or", "-ous", "-pathy", "-phone", "-phobia", "-proof", "-scope",
+        "-ship", "-sion", "-some", "-speak", "-sphere", "-tude", "-tion", "-ward", "-wise", "-worthy", "-y",
+        "-ization" // Note: "-ization" was in your original list but is more specific than "-tion", so it can be kept or removed based on preference.
     ]
 };
 
