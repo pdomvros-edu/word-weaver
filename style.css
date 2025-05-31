@@ -41,13 +41,13 @@ body {
 }
 
 .teacher-image {
-    width: 90px; /* Slightly wider than height for an oval */
-    height: 90px; /* Slightly shorter than width for an oval */
-    border-radius: 50%; /* Makes it oval if width/height are different */
-    object-fit: cover; /* Ensures the image covers the area without distortion */
-    border: 2px solid #5cb85c; /* Green border around the image */
-    display: block; /* Ensures it takes its own line */
-    margin: 0 auto 10px auto; /* Centers it horizontally and adds some bottom margin */
+    width: 90px;
+    height: 100px; /* <--- MAKE SURE THIS IS 80px (or higher if you prefer) */
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #5cb85c;
+    display: block;
+    margin: 0 auto 10px auto;
 }
 
 
