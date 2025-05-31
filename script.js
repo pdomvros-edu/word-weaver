@@ -2,6 +2,295 @@
 
 const gameData = {
     base_words: [
+    {
+        word: "create",
+        level: "B1",
+        derivatives: [
+            { word: "creation", level: "B1", definition: "The act of bringing something into existence." },
+            { word: "creative", level: "B1", definition: "Relating to or involving imagination or original ideas." },
+            { word: "creativity", level: "B2", definition: "The use of imagination to create something." },
+            { word: "creator", level: "B2", definition: "A person or thing that brings something into existence." },
+            { word: "recreate", level: "B2", definition: "To create again or produce a new version." }
+        ]
+    },
+    {
+        word: "agree",
+        level: "A2",
+        derivatives: [
+            { word: "agreement", level: "A2", definition: "A negotiated and typically legally binding arrangement." },
+            { word: "disagree", level: "A2", definition: "To have a different opinion." },
+            { word: "agreeable", level: "B1", definition: "Pleasant or pleasing." },
+            { word: "disagreement", level: "B1", definition: "A lack of consensus or approval." }
+        ]
+    },
+    {
+        word: "appear",
+        level: "A2",
+        derivatives: [
+            { word: "appearance", level: "B1", definition: "The way someone or something looks." },
+            { word: "disappear", level: "A2", definition: "To cease to be visible." },
+            { word: "reappear", level: "B1", definition: "To appear again." },
+            { word: "apparent", level: "B2", definition: "Clearly visible or understood." }
+        ]
+    },
+    {
+        word: "believe",
+        level: "A2",
+        derivatives: [
+            { word: "belief", level: "A2", definition: "An acceptance that something exists or is true." },
+            { word: "unbelievable", level: "B1", definition: "Not able to be believed; extraordinary." },
+            { word: "believer", level: "B1", definition: "A person who believes in a particular thing." },
+            { word: "disbelieve", level: "B2", definition: "To be unable to believe something." }
+        ]
+    },
+    {
+        word: "care",
+        level: "A2",
+        derivatives: [
+            { word: "careful", level: "A2", definition: "Making sure to avoid danger or harm." },
+            { word: "careless", level: "A2", definition: "Not giving sufficient attention or thought." },
+            { word: "caregiver", level: "B2", definition: "A family member or paid helper who cares for others." },
+            { word: "caring", level: "B1", definition: "Displaying kindness and concern for others." }
+        ]
+    },
+    {
+        word: "communicate",
+        level: "B1",
+        derivatives: [
+            { word: "communication", level: "B1", definition: "The imparting or exchanging of information." },
+            { word: "communicative", level: "B2", definition: "Willing or eager to talk or impart information." },
+            { word: "miscommunicate", level: "B2", definition: "To communicate incorrectly or inadequately." },
+            { word: "telecommunication", level: "B2", definition: "Communication over a distance by technology." }
+        ]
+    },
+    {
+        word: "compete",
+        level: "B1",
+        derivatives: [
+            { word: "competition", level: "B1", definition: "The activity of competing against others." },
+            { word: "competitive", level: "B1", definition: "Having a strong desire to win or be the best." },
+            { word: "competitor", level: "B1", definition: "A person or organization competing with others." },
+            { word: "uncompetitive", level: "B2", definition: "Not able to compete successfully." }
+        ]
+    },
+    {
+        word: "consider",
+        level: "B1",
+        derivatives: [
+            { word: "consideration", level: "B1", definition: "Careful thought or attention." },
+            { word: "considerate", level: "B1", definition: "Careful not to inconvenience others." },
+            { word: "reconsider", level: "B2", definition: "To consider again with possibility of change." },
+            { word: "inconsiderate", level: "B2", definition: "Thoughtlessly causing hurt to others." }
+        ]
+    },
+    {
+        word: "continue",
+        level: "A2",
+        derivatives: [
+            { word: "continuous", level: "B1", definition: "Forming an unbroken whole without interruption." },
+            { word: "continuation", level: "B2", definition: "The action of carrying something on over time." },
+            { word: "discontinue", level: "B2", definition: "To cease doing or providing something." }
+        ]
+    },
+    {
+        word: "decide",
+        level: "A2",
+        derivatives: [
+            { word: "decision", level: "A2", definition: "A conclusion or resolution reached after consideration." },
+            { word: "decisive", level: "B1", definition: "Settling an issue quickly." },
+            { word: "indecisive", level: "B2", definition: "Not able to make decisions quickly." }
+        ]
+    },
+    {
+        word: "develop",
+        level: "B1",
+        derivatives: [
+            { word: "development", level: "B1", definition: "The process of developing or being developed." },
+            { word: "developer", level: "B1", definition: "A person or company that develops something." },
+            { word: "underdeveloped", level: "B2", definition: "Not fully developed." },
+            { word: "redevelop", level: "B2", definition: "To develop again or differently." }
+        ]
+    },
+    {
+        word: "differ",
+        level: "B1",
+        derivatives: [
+            { word: "difference", level: "A2", definition: "A point or way in which people or things are dissimilar." },
+            { word: "different", level: "A1", definition: "Not the same as another or each other." },
+            { word: "indifferent", level: "B2", definition: "Having no particular interest or sympathy." }
+        ]
+    },
+    {
+        word: "direct",
+        level: "B1",
+        derivatives: [
+            { word: "direction", level: "A2", definition: "A course along which someone or something moves." },
+            { word: "director", level: "B1", definition: "A person who supervises or manages something." },
+            { word: "indirect", level: "B1", definition: "Not directly caused by or resulting from something." }
+        ]
+    },
+    {
+        word: "educate",
+        level: "B1",
+        derivatives: [
+            { word: "education", level: "A2", definition: "The process of receiving or giving systematic instruction." },
+            { word: "educator", level: "B2", definition: "A person who provides instruction or education." },
+            { word: "reeducate", level: "C1", definition: "To educate or train again." }
+        ]
+    },
+    {
+        word: "employ",
+        level: "B1",
+        derivatives: [
+            { word: "employee", level: "A2", definition: "A person employed for wages or salary." },
+            { word: "employer", level: "A2", definition: "A person or organization that employs people." },
+            { word: "unemployed", level: "A2", definition: "Without a paid job but available to work." }
+        ]
+    },
+    {
+        word: "excite",
+        level: "B1",
+        derivatives: [
+            { word: "excitement", level: "B1", definition: "A feeling of great enthusiasm and eagerness." },
+            { word: "exciting", level: "A2", definition: "Causing great enthusiasm and eagerness." },
+            { word: "unexciting", level: "B1", definition: "Not exciting; dull." }
+        ]
+    },
+    {
+        word: "expand",
+        level: "B1",
+        derivatives: [
+            { word: "expansion", level: "B2", definition: "The action of becoming larger or more extensive." },
+            { word: "expansive", level: "C1", definition: "Covering a wide area in terms of space or scope." }
+        ]
+    },
+    {
+        word: "explain",
+        level: "A2",
+        derivatives: [
+            { word: "explanation", level: "A2", definition: "A statement making something clear." },
+            { word: "explanatory", level: "B2", definition: "Intended to explain something." },
+            { word: "unexplained", level: "B2", definition: "Not described or made clear." }
+        ]
+    },
+    {
+        word: "express",
+        level: "B1",
+        derivatives: [
+            { word: "expression", level: "B1", definition: "The process of making known one's thoughts or feelings." },
+            { word: "expressive", level: "B2", definition: "Effectively conveying thought or feeling." },
+            { word: "inexpressible", level: "C1", definition: "Unable to be expressed in words." }
+        ]
+    },
+    {
+        word: "fortune",
+        level: "B1",
+        derivatives: [
+            { word: "fortunate", level: "B1", definition: "Lucky or favorable." },
+            { word: "unfortunate", level: "B1", definition: "Having bad luck." },
+            { word: "misfortune", level: "B2", definition: "Bad luck or an unlucky event." }
+        ]
+    },
+    {
+        word: "govern",
+        level: "B2",
+        derivatives: [
+            { word: "government", level: "B2", definition: "The system or group of people governing an organized community." },
+            { word: "governance", level: "C1", definition: "The action or manner of governing." },
+            { word: "governor", level: "B2", definition: "An official chosen to govern a province, state, or town." }
+        ]
+    },
+    {
+        word: "happy",
+        level: "A1",
+        derivatives: [
+            { word: "happiness", level: "A2", definition: "The state of being happy." },
+            { word: "unhappy", level: "A2", definition: "Not happy." },
+            { word: "happily", level: "A2", definition: "In a happy manner." }
+        ]
+    },
+    {
+        word: "help",
+        level: "A1",
+        derivatives: [
+            { word: "helper", level: "A2", definition: "A person who helps someone else." },
+            { word: "helpful", level: "A2", definition: "Giving or ready to give help." },
+            { word: "helpless", level: "B1", definition: "Unable to defend oneself or act without help." }
+        ]
+    },
+    {
+        word: "imagine",
+        level: "A2",
+        derivatives: [
+            { word: "imagination", level: "B1", definition: "The faculty of imagining things." },
+            { word: "imaginative", level: "B1", definition: "Having or showing creativity or inventiveness." },
+            { word: "unimaginable", level: "B2", definition: "Difficult or impossible to imagine." }
+        ]
+    },
+    {
+        word: "inform",
+        level: "B1",
+        derivatives: [
+            { word: "information", level: "A2", definition: "Facts provided or learned about something." },
+            { word: "informative", level: "B1", definition: "Providing useful or interesting information." },
+            { word: "misinform", level: "B2", definition: "To give false or misleading information." }
+        ]
+    },
+    {
+        word: "invent",
+        level: "B1",
+        derivatives: [
+            { word: "invention", level: "B1", definition: "The action of inventing something." },
+            { word: "inventor", level: "B1", definition: "A person who invented a particular process or device." },
+            { word: "inventive", level: "B2", definition: "Having the ability to create or design new things." }
+        ]
+    },
+    {
+        word: "invest",
+        level: "B1",
+        derivatives: [
+            { word: "investment", level: "B1", definition: "The action of investing money for profit." },
+            { word: "investor", level: "B1", definition: "A person who invests money for profit." },
+            { word: "reinvest", level: "B2", definition: "To invest again or further." }
+        ]
+    },
+    {
+        word: "know",
+        level: "A1",
+        derivatives: [
+            { word: "knowledge", level: "A2", definition: "Facts, information, and skills acquired through experience." },
+            { word: "unknown", level: "A2", definition: "Not known or familiar." },
+            { word: "well-known", level: "A2", definition: "Widely or generally known." }
+        ]
+    },
+    {
+        word: "legal",
+        level: "B1",
+        derivatives: [
+            { word: "illegal", level: "A2", definition: "Contrary to or forbidden by law." },
+            { word: "legality", level: "B2", definition: "The quality or state of being legal." },
+            { word: "legalize", level: "B2", definition: "To make something legal." }
+        ]
+    },
+    {
+        word: "like",
+        level: "A1",
+        derivatives: [
+            { word: "unlike", level: "A2", definition: "Different from; not similar to." },
+            { word: "likely", level: "A2", definition: "Such as well might happen or be true." },
+            { word: "likeness", level: "B1", definition: "The fact or quality of being alike." }
+        ]
+    },
+    {
+        word: "live",
+        level: "A1",
+        derivatives: [
+            { word: "life", level: "A1", definition: "The condition that distinguishes organisms from inorganic objects." },
+            { word: "alive", level: "A1", definition: "Living, not dead." },
+            { word: "lively", level: "A2", definition: "Full of life and energy." }
+        ]
+    }
+]
         {
             word: "govern",
             level: "B2",
