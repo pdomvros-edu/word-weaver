@@ -301,7 +301,7 @@ const gameData = {
                 { word: "industrialization", level: "C2", definition: "The development of industries in a country or region on a wide scale." },
                 { word: "industrious", level: "C1", definition: "Diligent and hard-working." }
             ]
-        },
+        }
         {
         word: "establish",
         level: "B2",
