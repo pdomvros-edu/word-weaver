@@ -1,358 +1,301 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Word Weaver</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-    <style>
-        /* Basic CSS for the game */
-        body {
-            font-family: 'Roboto', sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            background-color: #f0f2f5;
-            margin: 0;
-            color: #333;
-            overflow-y: scroll; /* Allow scrolling if content is long */
-            padding: 20px 0; /* Add padding for overall look */
+// script.js
+
+const gameData = {
+    base_words: [
+        {
+            word: "govern",
+            level: "B2",
+            derivatives: [
+                { word: "government", level: "B2", definition: "The group of people with the authority to govern a country or state; a particular administration." },
+                { word: "governance", level: "C1", definition: "The action or manner of governing a state, organization, etc." },
+                { word: "governor", level: "B2", definition: "An official chosen to govern a province, state, or town." },
+                { word: "governmental", level: "C1", definition: "Relating to government." },
+                { word: "ungovernable", level: "C2", definition: "(of a person or a situation) impossible to control or manage." },
+                { word: "misgovern", level: "C1", definition: "To govern badly." },
+                { word: "misgovernment", level: "C2", definition: "Bad or corrupt government." },
+                { word: "regovern", level: "C2", definition: "To govern again or anew. (Less common but possible)" }
+            ]
+        },
+        {
+            word: "national",
+            level: "B2",
+            derivatives: [
+                { word: "nation", level: "B2", definition: "A large body of people united by common descent, history, culture, or language, inhabiting a particular country or territory." },
+                { word: "nationality", level: "B2", definition: "The status of belonging to a particular nation." },
+                { word: "nationalize", level: "C1", definition: "Transfer (a major industry or company) from private to state ownership or control." },
+                { word: "nationalism", level: "C1", definition: "Identification with one's own nation and support for its interests, especially to the exclusion or detriment of the interests of other nations." },
+                { word: "international", level: "B2", definition: "Existing or occurring between two or more nations." },
+                { word: "denationalize", level: "C2", definition: "To transfer (an industry or business) from public to private ownership." },
+                { word: "multinational", level: "C1", definition: "Including or involving several countries or nationalities." },
+                { word: "nationalist", level: "C1", definition: "A person who advocates political independence for a country." },
+                { word: "rationalize", level: "C1", definition: "Attempt to explain or justify (behaviour or an attitude) with logical, plausible reasons, even if these are not true or appropriate." } // Added to show multi-affix
+            ]
+        },
+        {
+            word: "act",
+            level: "B2",
+            derivatives: [
+                { word: "action", level: "B2", definition: "The fact or process of doing something, typically to achieve an aim." },
+                { word: "active", level: "B2", definition: "Engaged in action or movement; not passive." },
+                { word: "actor", level: "B2", definition: "A person whose profession is acting on the stage, in films, or on television." },
+                { word: "actress", level: "B2", definition: "A female actor." },
+                { word: "activity", level: "B2", definition: "The condition in which things are happening or being done." },
+                { word: "inactive", level: "B2", definition: "Not engaging in or involving any or much physical activity." },
+                { word: "react", level: "C1", definition: "Respond to something." },
+                { word: "reaction", level: "C1", definition: "An action performed or a feeling experienced in response to a situation or event." },
+                { word: "reactivate", level: "C2", definition: "To make something active again." },
+                { word: "overact", level: "C1", definition: "Act in an exaggerated way." },
+                { word: "enact", level: "C1", definition: "To make (a bill or other proposal) law." },
+                { word: "enactment", level: "C2", definition: "The process of passing legislation." },
+                { word: "interact", level: "C1", definition: "Act in such a way as to have an effect on another; act reciprocally." },
+                { word: "interaction", level: "C1", definition: "Reciprocal action or influence." }
+            ]
+        },
+        {
+            word: "connect",
+            level: "B2",
+            derivatives: [
+                { word: "connection", level: "B2", definition: "A relationship in which a person, thing, or idea is linked or associated with something else." },
+                { word: "connected", level: "B2", definition: "Brought into contact with someone or something; joined together." },
+                { word: "disconnect", level: "B2", definition: "Break the connection of or from." },
+                { word: "disconnection", level: "C1", definition: "The state of being disconnected." },
+                { word: "reconnect", level: "C1", definition: "Connect again or anew." },
+                { word: "connectivity", level: "C2", definition: "The state or extent of being connected or interconnected." }
+            ]
+        },
+        {
+            word: "happy",
+            level: "B2",
+            derivatives: [
+                { word: "happiness", level: "B2", definition: "The state of being happy." },
+                { word: "unhappy", level: "B2", definition: "Not happy." },
+                { word: "unhappiness", level: "C1", definition: "The state of being unhappy." },
+                { word: "happily", level: "B2", definition: "In a happy way; with happiness." }
+            ]
+        },
+        {
+            word: "rational", // New base word for testing multi-affix "irrationality"
+            level: "C1",
+            derivatives: [
+                { word: "rationality", level: "C1", definition: "The quality of being based on or in accordance with reason or logic." },
+                { word: "irrational", level: "C1", definition: "Not logical or reasonable." },
+                { word: "irrationality", level: "C2", definition: "The state of being illogical or unreasonable." },
+                { word: "rationalize", level: "C1", definition: "Attempt to explain or justify (behaviour or an attitude) with logical, plausible reasons, even if these are not true or appropriate." },
+                { word: "rationalization", level: "C2", definition: "The action of attempting to explain or justify behaviour or an attitude with logical reasons." },
+                { word: "rationally", level: "C1", definition: "In a way that is based on or in accordance with reason or logic." }
+            ]
         }
+    ],
+    common_prefixes: ["un-", "dis-", "re-", "pre-", "mis-", "co-", "in-", "im-", "il-", "ir-", "de-", "ex-", "sub-", "inter-", "over-", "under-", "anti-", "auto-", "bi-", "non-", "post-", "pro-", "trans-", "semi-"],
+    common_suffixes: ["-ment", "-tion", "-sion", "-able", "-ible", "-ly", "-ness", "-ful", "-less", "-er", "-or", "-ist", "-ism", "-ity", "-ive", "-al", "-ic", "-ize", "-ify", "-en", "-dom", "-ship", "-ence", "-ancy", "-ant", "-ent", "-ize"] // added -ize here, might be a verb suffix
+};
 
-        .screen {
-            background-color: #fff;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-            padding: 30px;
-            width: 90%;
-            max-width: 900px;
-            box-sizing: border-box;
-            margin: 20px 0;
-        }
+// DOM Elements
+const wordSelectionScreen = document.getElementById('wordSelectionScreen');
+const baseWordSelectionGrid = document.getElementById('baseWordSelectionGrid');
+const gameScreen = document.getElementById('gameScreen');
 
-        .screen.hidden {
-            display: none;
-        }
+const baseWordDisplay = document.getElementById('baseWordDisplay');
+const prefixList = document.getElementById('prefixList');
+const suffixList = document.getElementById('suffixList');
+const wordConstructionArea = document.getElementById('wordConstructionArea');
+const buildWordBtn = document.getElementById('buildWordBtn');
+const resetWordBtn = document.getElementById('resetWordBtn');
+const nextWordBtn = document.getElementById('nextWordBtn');
+const feedbackMessage = document.getElementById('feedbackMessage');
+const scoreDisplay = document.getElementById('scoreDisplay');
+const foundWordsList = document.getElementById('foundWordsList');
 
-        /* --- Word Selection Screen --- */
-        .word-selection-screen h1 {
-            text-align: center;
-            color: #2c3e50;
-            margin-bottom: 30px;
-        }
+let currentBaseWordData = null;
+let foundWordsForCurrentBase = new Set();
+let totalScore = 0;
 
-        .word-selection-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 15px;
-            justify-content: center;
-        }
+// State for building a word
+let selectedPrefix = null;
+let selectedSuffix = null;
+let constructedWord = ''; // The actual word string built for checking
 
-        .word-select-btn {
-            background-color: #3498db;
-            color: white;
-            padding: 15px 20px;
-            border: none;
-            border-radius: 8px;
-            font-size: 1.1em;
-            cursor: pointer;
-            transition: background-color 0.2s ease, transform 0.1s ease;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
+// --- Screen Management ---
+function showScreen(screenId) {
+    document.querySelectorAll('.screen').forEach(screen => {
+        screen.classList.add('hidden');
+    });
+    document.getElementById(screenId).classList.remove('hidden');
+}
 
-        .word-select-btn:hover {
-            background-color: #2980b9;
-            transform: translateY(-2px);
-        }
+// --- Game Initialization ---
+function initGame() {
+    renderBaseWordSelection();
+    showScreen('wordSelectionScreen');
+    updateScoreDisplay();
+}
 
-        .word-select-btn .word-level {
-            font-size: 0.8em;
-            background-color: rgba(0, 0, 0, 0.2);
-            padding: 3px 8px;
-            border-radius: 10px;
-            margin-top: 5px;
-        }
+function renderBaseWordSelection() {
+    baseWordSelectionGrid.innerHTML = '';
+    gameData.base_words.forEach(wordData => {
+        const button = document.createElement('button');
+        button.classList.add('word-select-btn');
+        button.innerHTML = `${wordData.word} <span class="word-level ${wordData.level}">${wordData.level}</span>`;
+        button.onclick = () => selectBaseWord(wordData);
+        baseWordSelectionGrid.appendChild(button);
+    });
+}
 
-        /* --- Game Screen (Main) --- */
-        .game-container {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 20px;
-        }
+function selectBaseWord(wordData) {
+    currentBaseWordData = wordData;
+    foundWordsForCurrentBase.clear(); // Reset found words for new base word
+    foundWordsList.innerHTML = ''; // Clear the displayed list
+    totalScore = 0; // Reset score for a new game session on a new word
+    updateScoreDisplay();
+    resetWordConstruction();
+    renderAffixes();
+    baseWordDisplay.textContent = currentBaseWordData.word;
+    showScreen('gameScreen');
+    feedbackMessage.textContent = ''; // Clear previous feedback
+}
 
-        h1, h2 {
-            text-align: center;
-            color: #2c3e50;
-        }
+function renderAffixes() {
+    prefixList.innerHTML = '';
+    gameData.common_prefixes.forEach(prefix => {
+        const span = document.createElement('span');
+        span.classList.add('affix-item');
+        span.textContent = prefix;
+        span.onclick = () => selectAffix(prefix, 'prefix', span);
+        prefixList.appendChild(span);
+    });
 
-        .section-header {
-            font-size: 1.2em;
-            font-weight: bold;
-            margin-bottom: 10px;
-            color: #34495e;
-            border-bottom: 2px solid #ecf0f1;
-            padding-bottom: 5px;
-        }
+    suffixList.innerHTML = '';
+    gameData.common_suffixes.forEach(suffix => {
+        const span = document.createElement('span');
+        span.classList.add('affix-item');
+        span.textContent = suffix;
+        span.onclick = () => selectAffix(suffix, 'suffix', span);
+        suffixList.appendChild(span);
+    });
+}
 
-        .base-word-display {
-            font-size: 2.5em;
-            font-weight: 700;
-            text-align: center;
-            color: #e74c3c; /* Red for emphasis */
-            margin-bottom: 20px;
-            text-transform: uppercase;
-        }
+function selectAffix(affix, type, element) {
+    // Deselect previous affix of the same type
+    if (type === 'prefix' && selectedPrefix) {
+        document.querySelector(`.affix-item.selected[data-affix="${selectedPrefix}"]`).classList.remove('selected');
+    } else if (type === 'suffix' && selectedSuffix) {
+        document.querySelector(`.affix-item.selected[data-affix="${selectedSuffix}"]`).classList.remove('selected');
+    }
 
-        /* --- Word Construction Area --- */
-        .word-construction-area {
-            min-height: 80px;
-            border: 2px dashed #ccc;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            padding: 15px;
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            background-color: #f8f8f8;
-        }
+    // Set new selection
+    if (type === 'prefix') {
+        selectedPrefix = affix;
+    } else {
+        selectedSuffix = affix;
+    }
+    element.classList.add('selected');
+    element.setAttribute('data-affix', affix); // Store affix value for deselection
 
-        .construction-part {
-            background-color: #a2d2ff; /* Light blue for parts */
-            color: #1a5276;
-            padding: 8px 15px;
-            border-radius: 25px;
-            font-size: 1.1em;
-            font-weight: bold;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        .construction-part.base {
-             background-color: #e6b12c; /* Orange for base word */
-             color: white;
-        }
-        .construction-part.prefix {
-             background-color: #c780e0; /* Purple for prefix */
-             color: white;
-        }
-        .construction-part.suffix {
-             background-color: #8be080; /* Green for suffix */
-             color: white;
-        }
+    updateWordConstructionArea();
+}
 
+function updateWordConstructionArea() {
+    wordConstructionArea.innerHTML = '';
 
-        .affix-list {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-bottom: 15px;
-            padding: 10px;
-            background-color: #ecf0f1;
-            border-radius: 8px;
-        }
+    const parts = [];
+    if (selectedPrefix) {
+        parts.push({ type: 'prefix', value: selectedPrefix.slice(0, -1) }); // Remove hyphen
+    }
+    parts.push({ type: 'base', value: currentBaseWordData.word });
+    if (selectedSuffix) {
+        parts.push({ type: 'suffix', value: selectedSuffix.slice(1) }); // Remove hyphen
+    }
 
-        .affix-item {
-            background-color: #3498db;
-            color: white;
-            padding: 5px 12px;
-            border-radius: 20px;
-            font-size: 0.9em;
-            cursor: pointer;
-            transition: background-color 0.2s ease;
-        }
+    parts.forEach(part => {
+        const span = document.createElement('span');
+        span.classList.add('construction-part', part.type);
+        span.textContent = part.value;
+        wordConstructionArea.appendChild(span);
+    });
 
-        .affix-item.selected {
-            background-color: #2980b9; /* Darker when selected */
-            border: 2px solid #2ecc71; /* Green border for active selection */
-        }
+    // Automatically build the word string for check, but don't show it yet
+    constructedWord = parts.map(p => p.value).join('').toLowerCase();
+}
 
-        .affix-item:hover {
-            background-color: #2980b9;
-        }
+function resetWordConstruction() {
+    selectedPrefix = null;
+    selectedSuffix = null;
+    constructedWord = '';
+    wordConstructionArea.innerHTML = ''; // Clear visual construction area
+    wordConstructionArea.innerHTML = `<span class="construction-part base">${currentBaseWordData.word}</span>`; // Put base word back
 
-        .game-buttons {
-            display: flex;
-            gap: 10px;
-            margin-top: 20px;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
+    // Remove 'selected' class from all affix items
+    document.querySelectorAll('.affix-item.selected').forEach(item => {
+        item.classList.remove('selected');
+        item.removeAttribute('data-affix');
+    });
+    feedbackMessage.textContent = ''; // Clear feedback
+}
 
-        .game-buttons button {
-            padding: 12px 20px;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 1em;
-            cursor: pointer;
-            transition: background-color 0.2s ease;
-            flex-grow: 1; /* Allow buttons to grow */
-            min-width: 120px; /* Minimum width for buttons */
-        }
+function buildAndCheckWord() {
+    if (!constructedWord || constructedWord === currentBaseWordData.word.toLowerCase()) {
+        showFeedback("Please select affixes to build a new word!", 'incorrect');
+        return;
+    }
 
-        #buildWordBtn {
-            background-color: #27ae60;
-        }
-        #buildWordBtn:hover {
-            background-color: #229954;
-        }
+    if (foundWordsForCurrentBase.has(constructedWord)) {
+        showFeedback("You've already found that word!", 'incorrect');
+        resetWordConstruction();
+        return;
+    }
 
-        #resetWordBtn {
-            background-color: #e74c3c;
-        }
-        #resetWordBtn:hover {
-            background-color: #c0392b;
-        }
+    const foundDerivative = currentBaseWordData.derivatives.find(d => d.word.toLowerCase() === constructedWord);
 
-        #checkWordBtn {
-            background-color: #2c3e50; /* Darker blue */
-        }
-        #checkWordBtn:hover {
-            background-color: #34495e;
-        }
+    if (foundDerivative) {
+        showFeedback("Correct! You found a new word!", 'correct');
+        totalScore += 10; // Award points
+        foundWordsForCurrentBase.add(constructedWord);
+        addWordToFoundList(foundDerivative);
+        updateScoreDisplay();
+        resetWordConstruction(); // Clear for next word
+    } else {
+        showFeedback(`"${constructedWord}" is not a valid word or not derivable from "${currentBaseWordData.word}".`, 'incorrect');
+        // Optionally, don't reset immediately, let them correct it
+    }
+}
 
+function addWordToFoundList(derivative) {
+    const li = document.createElement('li');
+    li.innerHTML = `
+        <span class="word">${derivative.word}</span>
+        <span class="level ${derivative.level}">${derivative.level}</span>
+        <span class="definition">${derivative.definition}</span>
+    `;
+    foundWordsList.prepend(li); // Add to the top of the list
+}
 
-        #nextWordBtn {
-            background-color: #f39c12;
-        }
+function updateScoreDisplay() {
+    const foundCount = foundWordsForCurrentBase.size;
+    const totalPossible = currentBaseWordData ? currentBaseWordData.derivatives.length : 0;
+    scoreDisplay.textContent = `Score: ${totalScore} | Words Found: ${foundCount} / ${totalPossible}`;
+}
 
-        #nextWordBtn:hover {
-            background-color: #e67e22;
-        }
+function showFeedback(message, type) {
+    feedbackMessage.textContent = message;
+    feedbackMessage.className = `feedback ${type}`; // Apply class for styling
+}
 
-        .feedback {
-            text-align: center;
-            margin-bottom: 15px;
-            min-height: 2em; /* Reserve space for feedback */
-        }
+// --- Event Listeners ---
+buildWordBtn.addEventListener('click', buildAndCheckWord);
+resetWordBtn.addEventListener('click', resetWordConstruction);
 
-        .feedback.correct {
-            color: #27ae60;
-            font-weight: bold;
-        }
+nextWordBtn.addEventListener('click', () => {
+    // Go back to the word selection screen
+    showScreen('wordSelectionScreen');
+    currentBaseWordData = null; // Clear current word data
+    // Optionally, reset total score if you want score per word selected
+    totalScore = 0;
+    updateScoreDisplay();
+    renderBaseWordSelection(); // Re-render in case you add more words dynamically
+});
 
-        .feedback.incorrect {
-            color: #e74c3c;
-            font-weight: bold;
-        }
+// --- Start the game ---
+initGame();
 
-        .score-display {
-            text-align: center;
-            font-size: 1.1em;
-            margin-bottom: 15px;
-            color: #555;
-        }
-
-        .found-words-list {
-            list-style: none;
-            padding: 0;
-            max-height: 300px; /* Fixed height for scrolling */
-            overflow-y: auto;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            padding: 10px;
-            background-color: #fdfdfd;
-        }
-
-        .found-words-list li {
-            background-color: #e8f6f3;
-            margin-bottom: 8px;
-            padding: 10px 15px;
-            border-left: 5px solid #2ecc71;
-            border-radius: 6px;
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-            font-size: 0.95em;
-        }
-
-        .found-words-list li .word {
-            font-weight: bold;
-            color: #2c3e50;
-        }
-
-        .found-words-list li .level {
-            display: inline-block;
-            background-color: #9b59b6; /* Purple for level */
-            color: white;
-            padding: 2px 8px;
-            border-radius: 15px;
-            font-size: 0.75em;
-            margin-left: 10px;
-        }
-        .found-words-list li .level.B2 { background-color: #3498db; } /* Blue */
-        .found-words-list li .level.C1 { background-color: #f39c12; } /* Orange */
-        .found-words-list li .level.C2 { background-color: #e74c3c; } /* Red */
-
-
-        .found-words-list li .definition {
-            font-size: 0.85em;
-            color: #666;
-            margin-top: 5px;
-        }
-
-        @media (min-width: 768px) {
-            .game-container {
-                grid-template-columns: 2fr 1fr; /* Two columns on wider screens */
-            }
-            .main-game-area {
-                grid-column: 1 / 2;
-            }
-            .sidebar {
-                grid-column: 2 / 3;
-            }
-            .game-buttons {
-                justify-content: flex-start; /* Align buttons to start */
-            }
-        }
-    </style>
-</head>
-<body>
-    <div class="screen word-selection-screen" id="wordSelectionScreen">
-        <h1>Choose Your Base Word</h1>
-        <p style="text-align: center; margin-bottom: 25px;">Click on a word to start building!</p>
-        <div class="word-selection-grid" id="baseWordSelectionGrid">
-            </div>
-    </div>
-
-    <div class="screen game-container hidden" id="gameScreen">
-        <div class="main-game-area">
-            <h1>The Word Weaver</h1>
-            <p style="text-align: center; margin-bottom: 25px;">Build words by clicking affixes and the base word!</p>
-
-            <div class="base-word-display" id="baseWordDisplay"></div>
-
-            <div class="section-header">Word Construction Area</div>
-            <div class="word-construction-area" id="wordConstructionArea">
-                </div>
-
-            <div class="game-buttons">
-                <button id="buildWordBtn">Build Word</button>
-                <button id="resetWordBtn">Reset Word</button>
-                <button id="nextWordBtn">Next Base Word</button>
-            </div>
-
-            <div class="feedback" id="feedbackMessage"></div>
-            <div class="score-display" id="scoreDisplay">Score: 0 | Words Found: 0 / 0</div>
-
-            <div class="section-header">Prefixes</div>
-            <div class="affix-list" id="prefixList"></div>
-
-            <div class="section-header">Suffixes</div>
-            <div class="affix-list" id="suffixList"></div>
-        </div>
-
-        <div class="sidebar">
-            <h2>Your Found Words</h2>
-            <ul class="found-words-list" id="foundWordsList">
-                </ul>
-        </div>
-    </div>
-
-    <script src="script.js"></script>
-</body>
-</html>
+// Initial display of base word in construction area (after game loads)
+// This will be handled by `selectBaseWord`
