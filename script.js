@@ -106,7 +106,7 @@ const gameData = {
                 { word: "illegal", level: "B2", definition: "Forbidden by law; unlawful." },
                 { word: "illegally", level: "B2", definition: "In an illegal manner." },
                 { word: "legality", level: "C1", definition: "The state or quality of being in conformity with the law." },
-                { word: "illegality", level: "C2", definition: "The quality or state of being illegal." } // Corrected typo from previous response
+                { word: "illegality", level: "C2", definition: "The quality or state of being illegal." }
             ]
         },
         {
@@ -244,8 +244,8 @@ const gameData = {
                 { word: "confidential", level: "C1", definition: "Intended to be kept secret." },
                 { word: "confidentiality", level: "C2", definition: "The state of keeping or being kept secret or private." },
                 { word: "confidently", level: "C1", definition: "In a confident manner." },
-                { word: "selfconfident", level: "C1", definition: "Feeling sure about your own ability or character." }, // Removed hyphen
-                { word: "selfconfidence", level: "C1", definition: "A feeling of trust in one's abilities, qualities, and judgment." } // Removed hyphen
+                { word: "selfconfident", level: "C1", definition: "Feeling sure about your own ability or character." },
+                { word: "selfconfidence", level: "C1", definition: "A feeling of trust in one's abilities, qualities, and judgment." }
             ]
         },
         {
@@ -284,12 +284,12 @@ const gameData = {
             level: "B2",
             derivatives: [
                 { word: "sensitive", level: "B2", definition: "Quick to detect or respond to slight changes, signals, or influences." },
-                { word: "insensitive", level: "C1", definition: "Lacking sensitivity, awareness, or sympathy." }, // Corrected 'insentive'
+                { word: "insensitive", level: "C1", definition: "Lacking sensitivity, awareness, or sympathy." },
                 { word: "sensitively", level: "C1", definition: "In a sensitive manner." },
                 { word: "sensibility", level: "C1", definition: "The ability to appreciate and respond to complex emotional or aesthetic influences." },
                 { word: "senseless", level: "C1", definition: "Lacking meaning, purpose, or consequence." },
                 { word: "sensory", level: "C1", definition: "Relating to sensation or the physical senses." },
-                { word: "nonsense", level: "B2", definition: "Foolish, meaningless, or absurd words or ideas." } // Corrected 'nonsence'
+                { word: "nonsense", level: "B2", definition: "Foolish, meaningless, or absurd words or ideas." }
             ]
         },
         {
@@ -314,9 +314,9 @@ const gameData = {
         "-ment", "-tion", "-sion", "-able", "-ible", "-ly", "-ness", "-ful", "-less",
         "-er", "-or", "-ist", "-ism", "-ity", "-ive", "-al", "-ic", "-ize", "-ify",
         "-en", "-dom", "-ship", "-ence", "-ancy", "-ant", "-ent", "-ous", "-ette",
-        "-ian", "-ing", "-ation", "-ition", "-ization", "-hood", "-esque", // Removed redundant '-ette'
-        "-fold", "-free", "-graph", "-ic", "-ical", "-ish", "-ite",
-        "-less", "-like", "-logy", "-meter", "-monger", "-nomy", "-oid", "-pathy", // Removed redundant '-ist', '-istic', '-ive' (already at top)
+        "-ian", "-ing", "-ation", "-ition", "-ization", "-hood", "-esque",
+        "-fold", "-free", "-graph", "-ish", "-ite",
+        "-like", "-logy", "-meter", "-monger", "-nomy", "-oid", "-pathy",
         "-phone", "-phobia", "-proof", "-scope", "-some", "-speak", "-sphere", "-tude", "-ward",
         "-wise", "-worthy", "-y"
     ]
@@ -357,6 +357,9 @@ function showScreen(screenId) {
 
 // --- Game Initialization ---
 function initGame() {
+    // Sort base words alphabetically before rendering
+    gameData.base_words.sort((a, b) => a.word.localeCompare(b.word));
+
     renderBaseWordSelection();
     showScreen('wordSelectionScreen');
     updateScoreDisplay();
@@ -367,8 +370,8 @@ function renderBaseWordSelection() {
     gameData.base_words.forEach(wordData => {
         const button = document.createElement('button');
         button.classList.add('word-select-btn');
-        // Ensure wordData.word and wordData.level exist and are strings
-        button.innerHTML = `${wordData.word} <span class="word-level ${wordData.level}">${wordData.level}</span>`;
+        // MODIFIED: Only display the word, no level on the button
+        button.innerHTML = wordData.word;
         button.onclick = () => selectBaseWord(wordData);
         baseWordSelectionGrid.appendChild(button);
     });
