@@ -683,7 +683,7 @@ const gameData = {
         "-ition", "-ity", "-ive", "-ize", "-less", "-like", "-logy", "-ly", "-meter", "-monger",
         "-ness", "-nomy", "-oid", "-or", "-ous", "-pathy", "-phone", "-phobia", "-proof", "-scope",
         "-ship", "-sion", "-some", "-speak", "-sphere", "-tude", "-tion", "-ward", "-wise", "-worthy", "-y",
-        "-ization" // Note: "-ization" was in your original list but is more specific than "-tion", so it can be kept or removed based on preference.
+        "-ization" // Note: More specific than "-tion"; keep based on preference
     ]
 };
 
