@@ -42,9 +42,10 @@ body {
 
 .teacher-image {
     width: 90px;
-    height: 150px; /* <--- MAKE SURE THIS IS 80px (or higher if you prefer) */
+    height: 120px; /* Adjust height as needed to show more or less of the image */
     border-radius: 50%;
-    object-fit: cover;
+    object-fit: cover; /* This is crucial to allow cropping while maintaining aspect ratio */
+    object-position: top; /* This ensures the top of the image is visible */
     border: 2px solid #5cb85c;
     display: block;
     margin: 0 auto 10px auto;
